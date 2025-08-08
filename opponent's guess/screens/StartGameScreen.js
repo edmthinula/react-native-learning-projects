@@ -39,8 +39,8 @@ function StartGameScreen({onPickNumber}) {
         />
       </View>
       <View style={styles.buttonWrapper}>
-      <PrimaryButton onPress={resetInputHandler}>Reset</PrimaryButton>
-      <PrimaryButton onPress={confirmInputNumber}>Confirm</PrimaryButton>
+      <PrimaryButton style={{width:'47%'}} onPress={resetInputHandler}>Reset</PrimaryButton>
+      <PrimaryButton style={{width:'47%'}} onPress={confirmInputNumber}>Confirm</PrimaryButton>
       </View>
     </View>
   );
