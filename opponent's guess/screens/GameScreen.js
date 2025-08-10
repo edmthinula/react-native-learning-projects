@@ -5,7 +5,7 @@ import PrimaryButton from '../components/ui/PrimaryButton'
 import NumberContainer from '../components/game/NumberContainer'
 import Card from '../components/ui/Card'
 import InstructionText from '../components/ui/InstructionText'
-import {Ionicons} from '@expo/vector-icons'
+import { Ionicons } from '@expo/vector-icons'
 
 function generateRandombetween (min, max, exclude) {
   const rndNm = Math.floor(Math.random() * (max - min)) + min
@@ -15,20 +15,23 @@ function generateRandombetween (min, max, exclude) {
     return rndNm
   }
 }
+let guessesNumber = []
+let minBoundry = 1
+let maxBoundry = 100
 
 function GameScreen ({ userNumber, onGameOver }) {
-  let minBoundry = 1
-  let maxBoundry = 100
   const initialguess = generateRandombetween(1, 100, userNumber)
   const [currentGuess, setCurrentGuess] = useState(initialguess)
-
-  let guessesNumber = []
 
   useEffect(() => {
     if (currentGuess == userNumber) {
       onGameOver()
     }
   }, [currentGuess])
+
+  useEffect(() => {
+    (guessesNumber = []), (minBoundry = 1), (maxBoundry = 100)
+  }, [])
 
   function nextGuessHandler (direction) {
     if (
@@ -68,17 +71,20 @@ function GameScreen ({ userNumber, onGameOver }) {
             style={{ width: '47%', marginTop: 10 }}
             onPress={nextGuessHandler.bind(this, 'lower')}
           >
-            <Ionicons name="remove" size={24} color={"white"}/>
+            <Ionicons name='remove' size={24} color={'white'} />
           </PrimaryButton>
 
           <PrimaryButton
             style={{ width: '47%', marginTop: 10 }}
             onPress={nextGuessHandler.bind(this, 'greater')}
           >
-            <Ionicons name="add" size={24} color={"white"} />
+            <Ionicons name='add' size={24} color={'white'} />
           </PrimaryButton>
         </View>
       </Card>
+      <PrimaryButton onPress={() => setCurrentGuess(userNumber)}>
+        had enough
+      </PrimaryButton>
       <View>{/* LOG ROUNDS */}</View>
     </View>
   )

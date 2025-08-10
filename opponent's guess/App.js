@@ -12,6 +12,7 @@ import * as SplashScreen from 'expo-splash-screen'
 export default function App () {
   const [usernumber, setUserNumber] = useState()
   const [gameIsOver, setGameIsOver] = useState(false)
+  const [guessRounds,setGuessRounds] = useState(0)
 
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -32,13 +33,19 @@ export default function App () {
     setGameIsOver(true)
   }
 
+  function startNewGameHandler(){
+    setUserNumber(null);
+    setGuessRounds(0);
+    setGameIsOver(false);
+  }
+
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />
 
   if (usernumber) {
     screen = <GameScreen userNumber={usernumber} onGameOver={onGameOver} />
   }
   if (gameIsOver) {
-    screen = <GameOverScreen />
+    screen = <GameOverScreen  userNumber={usernumber} roundsNumber={guessRounds} onStartNewGame={startNewGameHandler}/>
   }
 
   return (
@@ -47,7 +54,7 @@ export default function App () {
       colors={[Colors.primary400, Colors.accent500]}
     >
       <ImageBackground
-        source={require('./assets/background.jpg')}
+        source={require('./assets/images/background.jpg')}
         resizeMethod='cover'
         style={styles.rootScreen}
         imageStyle={styles.backgroundImage}
