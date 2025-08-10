@@ -1,8 +1,11 @@
 import { Text, View, StyleSheet, Alert } from 'react-native'
 import Title from '../components/ui/Title'
 import { useEffect, useState } from 'react'
-import PrimarButton from '../components/ui/PrimaryButton'
+import PrimaryButton from '../components/ui/PrimaryButton'
 import NumberContainer from '../components/game/NumberContainer'
+import Card from '../components/ui/Card'
+import InstructionText from '../components/ui/InstructionText'
+import {Ionicons} from '@expo/vector-icons'
 
 function generateRandombetween (min, max, exclude) {
   const rndNm = Math.floor(Math.random() * (max - min)) + min
@@ -54,24 +57,28 @@ function GameScreen ({ userNumber, onGameOver }) {
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
-      <View>
-        <Text>Higher or Lower ?</Text>
-        <View style={{ width: '100%', alignItems: 'center' }}>
-          <PrimarButton
-            style={{ width: '90%', marginTop: 10 }}
+      <Card>
+        <InstructionText style={styles.istructiontext}>
+          Higher or Lower ?
+        </InstructionText>
+        <View
+          style={{ width: '100%', alignItems: 'center', flexDirection: 'row' }}
+        >
+          <PrimaryButton
+            style={{ width: '47%', marginTop: 10 }}
             onPress={nextGuessHandler.bind(this, 'lower')}
           >
-            -
-          </PrimarButton>
+            <Ionicons name="remove" size={24} color={"white"}/>
+          </PrimaryButton>
 
-          <PrimarButton
-            style={{ width: '90%', marginTop: 10 }}
+          <PrimaryButton
+            style={{ width: '47%', marginTop: 10 }}
             onPress={nextGuessHandler.bind(this, 'greater')}
           >
-            +
-          </PrimarButton>
+            <Ionicons name="add" size={24} color={"white"} />
+          </PrimaryButton>
         </View>
-      </View>
+      </Card>
       <View>{/* LOG ROUNDS */}</View>
     </View>
   )
@@ -92,5 +99,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     borderWidth: 2,
     borderColor: '#ddb52f'
+  },
+  istructiontext: {
+    marginBottom: 10
   }
 })
