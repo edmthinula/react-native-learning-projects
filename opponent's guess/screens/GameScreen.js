@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Alert } from 'react-native'
+import { Text, View, StyleSheet, Alert, FlatList } from 'react-native'
 import Title from '../components/ui/Title'
 import { useEffect, useState } from 'react'
 import PrimaryButton from '../components/ui/PrimaryButton'
@@ -6,6 +6,7 @@ import NumberContainer from '../components/game/NumberContainer'
 import Card from '../components/ui/Card'
 import InstructionText from '../components/ui/InstructionText'
 import { Ionicons } from '@expo/vector-icons'
+import GuessLogItem from '../components/game/GuessLogItem'
 
 function generateRandombetween (min, max, exclude) {
   const rndNm = Math.floor(Math.random() * (max - min)) + min
@@ -25,7 +26,7 @@ function GameScreen ({ userNumber, onGameOver }) {
 
   useEffect(() => {
     if (currentGuess == userNumber) {
-      onGameOver()
+      onGameOver(guessesNumber.length)
     }
   }, [currentGuess])
 
@@ -82,9 +83,17 @@ function GameScreen ({ userNumber, onGameOver }) {
           </PrimaryButton>
         </View>
       </Card>
-      <PrimaryButton onPress={() => setCurrentGuess(userNumber)}>
+      {/* <PrimaryButton onPress={() => setCurrentGuess(userNumber)}>
         had enough
-      </PrimaryButton>
+      </PrimaryButton> */}
+      <FlatList
+        data={guessesNumber}
+        alwaysBounceVertical={false}
+        renderItem={itemData => <GuessLogItem roundNumber = {guessesNumber.length - itemData.index} guess = {itemData.item} /> }
+        keyExtractor={(item)=>{
+          return item
+        }}
+      />
       <View>{/* LOG ROUNDS */}</View>
     </View>
   )
@@ -108,5 +117,8 @@ const styles = StyleSheet.create({
   },
   istructiontext: {
     marginBottom: 10
+  },
+  listContainer:{
+    flex:1
   }
 })

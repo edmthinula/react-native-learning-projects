@@ -29,8 +29,9 @@ export default function App () {
     setUserNumber(pickedNumber)
   }
 
-  function onGameOver () {
+  function onGameOver (guessRounds) {
     setGameIsOver(true)
+    setGuessRounds(guessRounds)
   }
 
   function startNewGameHandler(){
