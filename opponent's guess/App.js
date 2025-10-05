@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import { useState , useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { StyleSheet, ImageBackground, SafeAreaView } from 'react-native'
 import { Platform, StatusBar } from 'react-native'
 import StartGameScreen from './screens/StartGameScreen'
@@ -12,7 +12,7 @@ import * as SplashScreen from 'expo-splash-screen'
 export default function App () {
   const [usernumber, setUserNumber] = useState()
   const [gameIsOver, setGameIsOver] = useState(false)
-  const [guessRounds,setGuessRounds] = useState(0)
+  const [guessRounds, setGuessRounds] = useState(0)
 
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -35,19 +35,34 @@ export default function App () {
     setGuessRounds(guessRounds)
   }
 
-  function startNewGameHandler(){
-    setUserNumber(null);
-    setGuessRounds(0);
-    setGameIsOver(false);
+  function startNewGameHandler () {
+    setUserNumber(null)
+    setGuessRounds(0)
+    setGameIsOver(false)
   }
 
-  let screen = <StartGameScreen onPickNumber={pickedNumberHandler} key="start" />
+  let screen = (
+    <StartGameScreen onPickNumber={pickedNumberHandler} key='start' />
+  )
 
   if (usernumber) {
-    screen = <GameScreen userNumber={usernumber} onGameOver={onGameOver} key={usernumber} />
+    screen = (
+      <GameScreen
+        userNumber={usernumber}
+        onGameOver={onGameOver}
+        key={usernumber}
+      />
+    )
   }
   if (gameIsOver && usernumber) {
-    screen = <GameOverScreen  userNumber={usernumber} roundsNumber={guessRounds} onStartNewGame={startNewGameHandler} key="gameover"/>
+    screen = (
+      <GameOverScreen
+        userNumber={usernumber}
+        roundsNumber={guessRounds}
+        onStartNewGame={startNewGameHandler}
+        key='gameover'
+      />
+    )
   }
 
   return (
@@ -63,7 +78,7 @@ export default function App () {
       >
         <SafeAreaView
           style={[
-            styles.rootScreen,
+            styles.rootScreen
             // {
             //   paddingTop:
             //     Platform.OS === 'android' ? StatusBar.currentHeight : 0

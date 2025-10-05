@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Alert, FlatList} from 'react-native'
+import { Text, View, StyleSheet, Alert, FlatList } from 'react-native'
 import Title from '../components/ui/Title'
 import { useEffect, useState } from 'react'
 import PrimaryButton from '../components/ui/PrimaryButton'
@@ -40,10 +40,10 @@ function GameScreen ({ userNumber, onGameOver }) {
       ])
       return
     }
-    
+
     let newMinBoundry = minBoundry
     let newMaxBoundry = maxBoundry
-    
+
     if (direction === 'lower') {
       newMaxBoundry = currentGuess
       setMaxBoundry(currentGuess)
@@ -51,15 +51,19 @@ function GameScreen ({ userNumber, onGameOver }) {
       newMinBoundry = currentGuess + 1
       setMinBoundry(currentGuess + 1)
     }
-    
+
     const newGuessesNumber = [...guessesNumber, currentGuess]
     setGuessesNumber(newGuessesNumber)
-    
+
     let newRndNumber
     do {
-      newRndNumber = generateRandombetween(newMinBoundry, newMaxBoundry, currentGuess)
+      newRndNumber = generateRandombetween(
+        newMinBoundry,
+        newMaxBoundry,
+        currentGuess
+      )
     } while (newGuessesNumber.includes(newRndNumber))
-    
+
     setCurrentGuess(newRndNumber)
   }
 
@@ -105,7 +109,7 @@ function GameScreen ({ userNumber, onGameOver }) {
   )
 }
 
-export default GameScreen;
+export default GameScreen
 
 const styles = StyleSheet.create({
   screen: {

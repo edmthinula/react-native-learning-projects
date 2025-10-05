@@ -1,11 +1,11 @@
-import {  View, StyleSheet , Dimensions } from 'react-native'
+import { View, StyleSheet, Dimensions } from 'react-native'
 import Colors from '../../constants/colors'
 
 function Card ({ children }) {
   return <View style={styles.card}>{children}</View>
 }
 
-export default Card;
+export default Card
 
 const deviceWidth = Dimensions.get('window').width
 
