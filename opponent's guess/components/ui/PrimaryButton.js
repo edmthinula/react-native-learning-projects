@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native'
+import { View, Text, Pressable, StyleSheet, Platform } from 'react-native'
 import Colors from '../../constants/colors'
 
 function PrimaryButton ({ children, onPress, style }) {
@@ -26,7 +26,11 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     margin: 4,
     overflow: 'hidden',
-    elevation: 3
+    elevation: Platform.OS === 'android' ? 2 : 0,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    shadowOpacity: 0.25
   },
   buttonInnercontainer: {
     backgroundColor: Colors.primary500,
