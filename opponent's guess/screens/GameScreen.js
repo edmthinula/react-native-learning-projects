@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, Alert, FlatList } from 'react-native'
+import { Text, View, StyleSheet, Alert, FlatList} from 'react-native'
 import Title from '../components/ui/Title'
 import { useEffect, useState } from 'react'
 import PrimaryButton from '../components/ui/PrimaryButton'
@@ -16,23 +16,19 @@ function generateRandombetween (min, max, exclude) {
     return rndNm
   }
 }
-let guessesNumber = []
-let minBoundry = 1
-let maxBoundry = 100
 
 function GameScreen ({ userNumber, onGameOver }) {
   const initialguess = generateRandombetween(1, 100, userNumber)
   const [currentGuess, setCurrentGuess] = useState(initialguess)
+  const [guessesNumber, setGuessesNumber] = useState([])
+  const [minBoundry, setMinBoundry] = useState(1)
+  const [maxBoundry, setMaxBoundry] = useState(100)
 
   useEffect(() => {
     if (currentGuess == userNumber) {
       onGameOver(guessesNumber.length)
     }
-  }, [currentGuess])
-
-  useEffect(() => {
-    (guessesNumber = []), (minBoundry = 1), (maxBoundry = 100)
-  }, [])
+  }, [currentGuess, userNumber, onGameOver])
 
   function nextGuessHandler (direction) {
     if (
@@ -44,16 +40,26 @@ function GameScreen ({ userNumber, onGameOver }) {
       ])
       return
     }
+    
+    let newMinBoundry = minBoundry
+    let newMaxBoundry = maxBoundry
+    
     if (direction === 'lower') {
-      maxBoundry = currentGuess
+      newMaxBoundry = currentGuess
+      setMaxBoundry(currentGuess)
     } else {
-      minBoundry = currentGuess + 1
+      newMinBoundry = currentGuess + 1
+      setMinBoundry(currentGuess + 1)
     }
-    guessesNumber.push(currentGuess)
+    
+    const newGuessesNumber = [...guessesNumber, currentGuess]
+    setGuessesNumber(newGuessesNumber)
+    
     let newRndNumber
     do {
-      newRndNumber = generateRandombetween(minBoundry, maxBoundry, currentGuess)
-    } while (guessesNumber.includes(newRndNumber))
+      newRndNumber = generateRandombetween(newMinBoundry, newMaxBoundry, currentGuess)
+    } while (newGuessesNumber.includes(newRndNumber))
+    
     setCurrentGuess(newRndNumber)
   }
 
@@ -83,29 +89,30 @@ function GameScreen ({ userNumber, onGameOver }) {
           </PrimaryButton>
         </View>
       </Card>
-      {/* <PrimaryButton onPress={() => setCurrentGuess(userNumber)}>
-        had enough
-      </PrimaryButton> */}
       <FlatList
         data={guessesNumber}
         alwaysBounceVertical={false}
-        renderItem={itemData => <GuessLogItem roundNumber = {guessesNumber.length - itemData.index} guess = {itemData.item} /> }
-        keyExtractor={(item)=>{
-          return item
-        }}
+        renderItem={itemData => (
+          <GuessLogItem
+            roundNumber={guessesNumber.length - itemData.index}
+            guess={itemData.item}
+          />
+        )}
+        keyExtractor={(item, index) => index.toString()}
       />
       <View>{/* LOG ROUNDS */}</View>
     </View>
   )
 }
 
-export default GameScreen
+export default GameScreen;
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
     padding: 24,
-    marginTop: 55
+    marginTop: 55,
+    alignItems: 'center'
   },
   title: {
     fontSize: 18,
@@ -118,7 +125,7 @@ const styles = StyleSheet.create({
   istructiontext: {
     marginBottom: 10
   },
-  listContainer:{
-    flex:1
+  listContainer: {
+    flex: 1
   }
 })

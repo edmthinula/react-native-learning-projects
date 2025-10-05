@@ -27,6 +27,7 @@ export default function App () {
 
   function pickedNumberHandler (pickedNumber) {
     setUserNumber(pickedNumber)
+    setGameIsOver(false)
   }
 
   function onGameOver (guessRounds) {
@@ -40,13 +41,13 @@ export default function App () {
     setGameIsOver(false);
   }
 
-  let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />
+  let screen = <StartGameScreen onPickNumber={pickedNumberHandler} key="start" />
 
   if (usernumber) {
-    screen = <GameScreen userNumber={usernumber} onGameOver={onGameOver} />
+    screen = <GameScreen userNumber={usernumber} onGameOver={onGameOver} key={usernumber} />
   }
-  if (gameIsOver) {
-    screen = <GameOverScreen  userNumber={usernumber} roundsNumber={guessRounds} onStartNewGame={startNewGameHandler}/>
+  if (gameIsOver && usernumber) {
+    screen = <GameOverScreen  userNumber={usernumber} roundsNumber={guessRounds} onStartNewGame={startNewGameHandler} key="gameover"/>
   }
 
   return (
@@ -63,10 +64,10 @@ export default function App () {
         <SafeAreaView
           style={[
             styles.rootScreen,
-            {
-              paddingTop:
-                Platform.OS === 'android' ? StatusBar.currentHeight : 0
-            }
+            // {
+            //   paddingTop:
+            //     Platform.OS === 'android' ? StatusBar.currentHeight : 0
+            // }
           ]}
         >
           {screen}
