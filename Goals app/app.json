@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "RNCourse",
-    "slug": "RNCourse",
+    "name": "Goals app",
+    "slug": "Goals app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

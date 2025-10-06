@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "RNCourse",
-    "slug": "RNCourse",
+    "name": "Opponent's Guess App",
+    "slug": "Opponent's Guess App",
     "version": "1.0.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
