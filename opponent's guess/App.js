@@ -94,7 +94,7 @@ export default function App () {
 
 const styles = StyleSheet.create({
   rootScreen: {
-    flex: 1
+    flex: 1,
   },
   backgroundImage: {
     opacity: 0.3

@@ -98,9 +98,9 @@ const styles = StyleSheet.create({
   },
   rootContainer: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   screen: {
-    flex: 1
+    flex: 1,
   }
 })
