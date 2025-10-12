@@ -17,18 +17,17 @@ const MealsOverviewScreen = ({ route, navigation }) => {
     })
   }, [catId, navigation])
   function renderMealItem (itemData) {
-       const item = itemData.item;
+    const item = itemData.item
 
     const mealItemProps = {
+      id: item.id,
       title: item.title,
       imageUrl: item.imageUrl,
       affordability: item.affordability,
       complexity: item.complexity,
       duration: item.duration
-    };
-    return (
-      <MealItem {...mealItemProps} />
-    );
+    }
+    return <MealItem {...mealItemProps} />
   }
 
   return (
