@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Drawer",
-    "slug": "Drawer",
+    "name": "Navigators App",
+    "slug": "Navigators App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
