@@ -8,6 +8,7 @@ import MealDetailScreen from './screens/MealDetailScreen'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import FavoritesScreen from './screens/FavoritesScreen'
 import { Ionicons } from '@expo/vector-icons'
+import FavoritesContextProvider from './store/context/favorite-context'
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -53,29 +54,34 @@ export default function App () {
   return (
     <>
       <StatusBar style='light' />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#351401'
-            },
-            headerTintColor: 'white',
-            contentStyle: {
-              backgroundColor: '#3f2f25'
-            }
-          }}
-        >
-          <Stack.Screen
-            name='Drawer'
-            component={DrawerNavigator}
-            options={{
-              headerShown: false
+      <FavoritesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: {
+                backgroundColor: '#351401'
+              },
+              headerTintColor: 'white',
+              contentStyle: {
+                backgroundColor: '#3f2f25'
+              }
             }}
-          />
-          <Stack.Screen name='Meals Overview' component={MealsOverviewScreen} />
-          <Stack.Screen name='Meal Detail' component={MealDetailScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name='Drawer'
+              component={DrawerNavigator}
+              options={{
+                headerShown: false
+              }}
+            />
+            <Stack.Screen
+              name='Meals Overview'
+              component={MealsOverviewScreen}
+            />
+            <Stack.Screen name='Meal Detail' component={MealDetailScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FavoritesContextProvider>
     </>
   )
 }
