@@ -1,4 +1,4 @@
-import { useLayoutEffect } from 'react'
+import { useContext, useLayoutEffect } from 'react'
 import { Image, Text, View, StyleSheet, ScrollView, Button } from 'react-native'
 import { MEALS } from '../data/dummy-data'
 import MealDetails from '../components/MealDetails'
