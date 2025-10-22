@@ -4,20 +4,35 @@ import { MEALS } from '../data/dummy-data'
 import MealDetails from '../components/MealDetails'
 import Subtitle from '../components/MealDetail/Subtitle'
 import List from '../components/MealDetail/List'
-import IconButton from '../components/MealDetail/IconButton'
+import IconButton from '../components/IconButton'
+import { useDispatch, useSelector } from 'react-redux'
+import { addFavorite, removeFavorite } from '../store/redux/favorites'
 
 const MealDetailScreen = ({ route, navigation }) => {
   const mealId = route.params.mealId
   const selectedMeal = MEALS.find(meal => meal.id === mealId)
-  function headerButtonPressHandler(){
-    console.log("pressed")
+  const favoritesMealsIds = useSelector(state => state.favoritesMeals.ids)
+  const mealIsFavorite = favoritesMealsIds.includes(mealId)
+  const dispatch = useDispatch()
+  function changeFavoriteStatuesHandler () {
+    if (mealIsFavorite) {
+      dispatch(removeFavorite({ id: mealId }))
+    } else {
+      dispatch(addFavorite({ id: mealId }))
+    }
   }
   useLayoutEffect(() => {
     navigation.setOptions({
       title: selectedMeal.title,
-      headerRight:()=> <IconButton onPress={headerButtonPressHandler} icon='star' color='white' />
+      headerRight: () => (
+        <IconButton
+          onPress={changeFavoriteStatuesHandler}
+          icon={mealIsFavorite ? 'star' : 'star-outline'}
+          color='white'
+        />
+      )
     })
-  }, [navigation, mealId])
+  }, [navigation, mealId, changeFavoriteStatuesHandler])
   return (
     <ScrollView style={styles.rootContainer}>
       <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
@@ -30,7 +45,7 @@ const MealDetailScreen = ({ route, navigation }) => {
       />
       <View style={styles.listOuterContainer}>
         <View style={styles.listContainer}>
-          <Subtitle>Ingrediants</Subtitle>
+          <Subtitle>Ingredients</Subtitle>
           <List data={selectedMeal.ingredients} />
           <Subtitle>Steps</Subtitle>
           <List data={selectedMeal.steps} />
