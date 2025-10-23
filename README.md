@@ -13,7 +13,6 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 - **React Native (Expo)**
 - **React Navigation** (Stack, Drawer, Tabs)
 - **Redux Toolkit / Context API**
-- **AsyncStorage**
 - **JavaScript (ES6+)**
 - **React Hooks** (`useState`, `useEffect`, `useContext`)
 
@@ -70,8 +69,9 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 
 | Branch | Description |
 |--------|--------------|
-| `main` | Contains Context API–based state management. |
-| `redux` | Contains Redux Toolkit–based implementation (alternative approach). |
+| [`main`](https://github.com/edmthinula/React_Native_Apps/commits/master) | Contains Context API–based state management ([view commit](https://github.com/edmthinula/React_Native_Apps/commit/e45cc2024266718f01d7c59e666975566d03a938)). |
+| [`redux`](https://github.com/edmthinula/React_Native_Apps/commits/redux-for-handle-favorite-meal-ids-across-app) | Contains Redux Toolkit–based implementation ([view commit](https://github.com/edmthinula/React_Native_Apps/commit/0f48531aa4e92b8b1dbd4057cfe11c79ca009f88)). |
+
 
 > Developers or learners can switch to the `redux` branch to explore the Redux version of the app.
 
