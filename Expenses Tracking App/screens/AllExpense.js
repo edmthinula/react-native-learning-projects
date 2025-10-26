@@ -1,10 +1,10 @@
 import React from 'react'
 import { Text } from 'react-native'
 
-const AllExpenseScreen = () => {
+const AllExpense = () => {
   return (
     <Text>AllExpenseScreen</Text>
   )
 }
 
-export default AllExpenseScreen    
+export default AllExpense    

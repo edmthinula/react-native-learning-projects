@@ -2,20 +2,101 @@ import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, Text, View } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
-import RecentScreen from './screens/RecentScreen'
-import AllExpenseScreen from './screens/AllExpenseScreen'
+import { createStackNavigator } from '@react-navigation/stack'
+import RecentExpenseScreen from './screens/RecentExpense'
+import AllExpenseScreen from './screens/AllExpense'
+import ManageExpenseScreen from './screens/ManageExpense'
+import { Ionicons } from '@expo/vector-icons'
+import 'react-native-gesture-handler'
+import { Button } from 'react-native'
+import { GlobalStyles } from './constants/styles'
 
 const Tab = createBottomTabNavigator()
+const Stack = createStackNavigator()
 
 export default function App () {
+  function ExpenseOverview ({ navigation }) {
+    function HeaderButton () {
+      return (
+        <Button
+          onPress={pressHandler}
+          title='Add'
+          color={GlobalStyles.colors.accent500}
+        />
+      )
+    }
+    function pressHandler () {
+      navigation.navigate('Manage')
+    }
+
+    return (
+      <Tab.Navigator
+        screenOptions={{
+          tabBarBackground: () => (
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: GlobalStyles.colors.primary500
+              }}
+            ></View>
+          ),
+          headerStyle: {
+            backgroundColor: GlobalStyles.colors.primary500
+          },
+          headerTintColor: 'white',
+          contentStyle: {
+            backgroundColor: '#31098fff'
+          },
+          tabBarActiveTintColor: GlobalStyles.colors.accent500,
+          headerRight: HeaderButton
+        }}
+      >
+        <Tab.Screen
+          options={({ route }) => ({
+            title: 'Recent Expenses', 
+            tabBarLabel: 'Recent', 
+            tabBarIcon: ({ color, size, focused }) => (
+              <Ionicons
+                name={focused ? 'time' : 'time-outline'}
+                size={size}
+                color={color}
+              />
+            )
+          })}
+          name='Recent'
+          component={RecentExpenseScreen}
+        />
+        <Tab.Screen
+          options={({ route }) => ({
+            title: 'All Expenses',
+            tabBarLabel: 'All',
+            tabBarIcon: ({ color, size, focused }) => (
+              <Ionicons
+                name={focused ? 'albums' : 'albums-outline'}
+                size={size}
+                color={color}
+              />
+            )
+          })}
+          name='All'
+          component={AllExpenseScreen}
+        />
+      </Tab.Navigator>
+    )
+  }
+
   return (
     <>
-      <StatusBar style='auto' />
+      <StatusBar style='light' />
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name='Recent' component={RecentScreen} />
-          <Tab.Screen name='All' component={AllExpenseScreen} />
-        </Tab.Navigator>
+        <Stack.Navigator>
+          <Stack.Screen
+            name='ExpensesOverview'
+            options={{ headerShown: false }}
+            component={ExpenseOverview}
+          />
+          <Stack.Screen name='Manage' component={ManageExpenseScreen} />
+        </Stack.Navigator>
       </NavigationContainer>
     </>
   )

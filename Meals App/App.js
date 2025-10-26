@@ -8,6 +8,7 @@ import MealDetailScreen from './screens/MealDetailScreen'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import FavoritesScreen from './screens/FavoritesScreen'
 import { Ionicons } from '@expo/vector-icons'
+import 'react-native-gesture-handler';
 import FavoritesContextProvider from './store/context/favorite-context'
 
 const Stack = createNativeStackNavigator()
