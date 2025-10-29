@@ -1,10 +1,22 @@
-import React from 'react'
-import { Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
+import { GlobalStyles } from '../constants/styles'
+import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput'
+import { ExpensesData } from '../data/starting-data'
+
 
 const AllExpense = () => {
   return (
-    <Text>AllExpenseScreen</Text>
+    <View style={styles.root}>
+      <ExpensesOutput items={ExpensesData}/>
+    </View>
   )
 }
 
 export default AllExpense    
+
+const styles = StyleSheet.create({
+  root:{
+    flex:1,
+    backgroundColor:GlobalStyles.colors.primary400
+  }
+})

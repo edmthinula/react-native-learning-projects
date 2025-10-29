@@ -18,10 +18,11 @@ export default function App () {
   function ExpenseOverview ({ navigation }) {
     function HeaderButton () {
       return (
-        <Button
+        <Ionicons
           onPress={pressHandler}
-          title='Add'
-          color={GlobalStyles.colors.accent500}
+          name='add'
+          size={40}
+          color={GlobalStyles.colors.primary100}
         />
       )
     }
@@ -32,29 +33,25 @@ export default function App () {
     return (
       <Tab.Navigator
         screenOptions={{
-          tabBarBackground: () => (
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: GlobalStyles.colors.primary500
-              }}
-            ></View>
-          ),
+          sceneContainerStyle: {
+            backgroundColor: 'black'
+          },
+          tabBarStyle: {
+            backgroundColor: GlobalStyles.colors.primary500 
+          },
           headerStyle: {
             backgroundColor: GlobalStyles.colors.primary500
           },
           headerTintColor: 'white',
-          contentStyle: {
-            backgroundColor: '#31098fff'
-          },
           tabBarActiveTintColor: GlobalStyles.colors.accent500,
+          tabBarInactiveTintColor: GlobalStyles.colors.primary50, 
           headerRight: HeaderButton
         }}
       >
         <Tab.Screen
           options={({ route }) => ({
-            title: 'Recent Expenses', 
-            tabBarLabel: 'Recent', 
+            title: 'Recent Expenses',
+            tabBarLabel: 'Recent',
             tabBarIcon: ({ color, size, focused }) => (
               <Ionicons
                 name={focused ? 'time' : 'time-outline'}
