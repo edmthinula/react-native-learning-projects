@@ -5,9 +5,13 @@ const Expenses = ({ id, title, price, expireDate }) => {
   return (
     <View key={id} style={styles.expense}>
       <View style={styles.innerContainer}>
-        <Text>{title}</Text>
-        <Text>{price}</Text>
-        <Text>{expireDate}</Text>
+        <View>
+          <Text style={styles.title}>{title}</Text>
+          <Text>{expireDate}</Text>
+        </View>
+        <View style={styles.priceBox}>
+          <Text style={styles.priceTag}>{price}</Text>
+        </View>
       </View>
     </View>
   )
@@ -20,10 +24,29 @@ const styles = StyleSheet.create({
     margin: 16,
     borderRadius: 8,
     overflow: Platform.OS === 'android' ? 'hidden' : 'visible',
-    backgroundColor: GlobalStyles.colors.accent500
+    backgroundColor: GlobalStyles.colors.primary200
   },
-    innerContainer: {
+  innerContainer: {
     borderRadius: 8,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding:15
   },
+  priceBox: {
+    backgroundColor: GlobalStyles.colors.primary50,
+    textAlign: 'center',
+    alignItems:'center',
+    paddingVertical:10,
+    borderRadius: 10,
+    width:'25%'
+  },
+  priceTag:{
+    fontSize:17,
+    fontWeight:'bold'
+  },
+  title:{
+    fontWeight:'bold',
+    fontSize:17
+  }
 })
