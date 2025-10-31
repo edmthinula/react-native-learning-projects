@@ -1,10 +1,10 @@
-class Expense{
-    constructor(id,title,price,expireDate){
-        this.id = id,
-        this.title = title,
-        this.price = price,
-        this.expireDate = expireDate
-    }
+class Expense {
+  constructor (id, title, amount, date) {
+    ;(this.id = id),
+      (this.title = title),
+      (this.amount = amount),
+      (this.date = date)
+  }
 }
 
 export default Expense

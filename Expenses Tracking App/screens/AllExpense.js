@@ -7,7 +7,7 @@ import { ExpensesData } from '../data/starting-data'
 const AllExpense = () => {
   return (
     <View style={styles.root}>
-      <ExpensesOutput items={ExpensesData} title='Total' />
+      <ExpensesOutput expenses={ExpensesData} title='Total' />
     </View>
   )
 }

@@ -6,7 +6,7 @@ import { ExpensesData } from '../data/starting-data'
 const RecentExpense = () => {
   return (
     <View style={styles.root}>
-      <ExpensesOutput items={ExpensesData} title='7 Days Later' />
+      <ExpensesOutput expenses={ExpensesData} title='7 Days Later' />
     </View>
   )
 }
