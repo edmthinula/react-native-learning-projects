@@ -3,7 +3,6 @@ import { GlobalStyles } from '../constants/styles'
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput'
 import { ExpensesData } from '../data/starting-data'
 
-
 const AllExpense = () => {
   return (
     <View style={styles.root}>
@@ -12,11 +11,11 @@ const AllExpense = () => {
   )
 }
 
-export default AllExpense    
+export default AllExpense
 
 const styles = StyleSheet.create({
-  root:{
-    flex:1,
-    backgroundColor:GlobalStyles.colors.primary400
+  root: {
+    flex: 1,
+    backgroundColor: GlobalStyles.colors.primary400
   }
 })

@@ -1,19 +1,12 @@
-import Expense from '../models/Expense';
-
-// Helper function: format date as 'YYYY-MM-DD'
-const formatDate = (date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-};
+import Expense from '../models/Expense'
+import { formatDate } from '../util/date'
 
 // Helper function: get a date 'n' days ago
-const daysAgo = (n) => {
-  const date = new Date();
-  date.setDate(date.getDate() - n);
-  return formatDate(date);
-};
+const daysAgo = n => {
+  const date = new Date()
+  date.setDate(date.getDate() - n)
+  return formatDate(date)
+}
 
 // Create dummy data dynamically
 export const ExpensesData = [
@@ -34,5 +27,5 @@ export const ExpensesData = [
   new Expense(10, 'Travel Insurance', 85.0, daysAgo(30)),
 
   // ❌ Expenses *outside* the 'Last Month' range (for testing exclusion)
-  new Expense(11, 'Furniture Delivery', 50.0, daysAgo(60)),
-];
+  new Expense(11, 'Furniture Delivery', 50.0, daysAgo(60))
+]

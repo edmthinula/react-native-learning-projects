@@ -38,12 +38,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 24,
-    paddingTop:24,
-    paddingBottom:0,
-    backgroundColor:GlobalStyles.colors.primary700
+    paddingTop: 24,
+    paddingBottom: 0,
+    backgroundColor: GlobalStyles.colors.primary700
   },
   topBar: {
-    marginBottom:16,
+    marginBottom: 16,
     flexDirection: 'row',
     backgroundColor: GlobalStyles.colors.primary50,
     justifyContent: 'space-between',
@@ -54,9 +54,9 @@ const styles = StyleSheet.create({
   amountTag: {
     fontWeight: 'bold',
     fontSize: 17,
-    color:GlobalStyles.colors.primary500
+    color: GlobalStyles.colors.primary500
   },
-  title:{
-    color:GlobalStyles.colors.primary500
+  title: {
+    color: GlobalStyles.colors.primary500
   }
 })

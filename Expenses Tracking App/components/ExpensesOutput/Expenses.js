@@ -1,16 +1,28 @@
 import { Platform, Pressable, StyleSheet, Text, View } from 'react-native'
 import { GlobalStyles } from '../../constants/styles'
+import { useNavigation } from '@react-navigation/native'
 
 const Expenses = ({ id, title, amount, date }) => {
+  const navigation = useNavigation()
+  function expensePressHandler () {
+    navigation.navigate('Manage', {
+      expenseId: id
+    })
+  }
   return (
-    <Pressable key={id}>
+    <Pressable
+      key={id}
+      onPress={expensePressHandler}
+      style={({ pressed }) => pressed && styles.pressed}
+      android_ripple
+    >
       <View style={styles.innerContainer}>
         <View>
-          <Text style={[styles.title,styles.textBase]}>{title}</Text>
+          <Text style={[styles.title, styles.textBase]}>{title}</Text>
           <Text style={styles.textBase}>{date}</Text>
         </View>
         <View style={styles.amountBox}>
-          <Text style={styles.amountTag}>{amount}</Text>
+          <Text style={styles.amountTag}>{amount.toFixed(2)}</Text>
         </View>
       </View>
     </Pressable>
@@ -35,12 +47,13 @@ const styles = StyleSheet.create({
   },
   amountBox: {
     backgroundColor: GlobalStyles.colors.primary50,
-    paddingHorizontal:12,
-    paddingVertical:4,
+    paddingHorizontal: 12,
+    paddingVertical: 4,
     textAlign: 'center',
     alignItems: 'center',
     paddingVertical: 10,
     borderRadius: 10,
+    minWidth: 80
   },
   amountTag: {
     fontSize: 16,
@@ -50,9 +63,12 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 'bold',
     fontSize: 16,
-    marginBottom:4
+    marginBottom: 4
   },
-  textBase:{
-    color:GlobalStyles.colors.primary100
+  textBase: {
+    color: GlobalStyles.colors.primary100
+  },
+  pressed: {
+    opacity: 0.75
   }
 })
