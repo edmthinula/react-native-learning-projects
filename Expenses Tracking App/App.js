@@ -10,6 +10,8 @@ import { Ionicons } from '@expo/vector-icons'
 import 'react-native-gesture-handler'
 import { GlobalStyles } from './constants/styles'
 import IconButton from './UI/IconButton'
+import { store } from './store/store'
+import { Provider } from 'react-redux'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -82,27 +84,29 @@ export default function App () {
   return (
     <>
       <StatusBar style='light' />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-            headerTintColor: 'white'
-          }}
-        >
-          <Stack.Screen
-            name='ExpensesOverview'
-            options={{ headerShown: false }}
-            component={ExpenseOverview}
-          />
-          <Stack.Screen
-            name='Manage'
-            component={ManageExpenseScreen}
-            options={{
-              presentation: 'modal'
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+              headerTintColor: 'white'
             }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name='ExpensesOverview'
+              options={{ headerShown: false }}
+              component={ExpenseOverview}
+            />
+            <Stack.Screen
+              name='Manage'
+              component={ManageExpenseScreen}
+              options={{
+                presentation: 'modal'
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     </>
   )
 }

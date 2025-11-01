@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { GlobalStyles } from '../constants/styles'
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput'
-import { ExpensesData } from '../data/starting-data'
+import { useSelector } from 'react-redux'
 
 const AllExpense = () => {
+  const AllExpense = useSelector(state => state.expenses)
   return (
     <View style={styles.root}>
-      <ExpensesOutput expenses={ExpensesData} title='Total' />
+      <ExpensesOutput expenses={AllExpense.expenses} title='Total' />
     </View>
   )
 }

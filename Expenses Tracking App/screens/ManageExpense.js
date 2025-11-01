@@ -3,10 +3,16 @@ import { StyleSheet, View } from 'react-native'
 import IconButton from '../UI/IconButton'
 import { GlobalStyles } from '../constants/styles'
 import Button from '../UI/Button'
+import { useDispatch, useSelector } from 'react-redux'
+import { addExpenses ,deleteExpenses } from '../store/Expenses'
+import { daysAgo } from '../data/starting-data'
+import { ExpensesData } from '../data/starting-data'
 
 const ManageExpense = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId
   const isEditing = !!editedExpenseId
+  const dispatch = useDispatch()
+  const AllExpense = useSelector(state => state.expenses)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -19,12 +25,20 @@ const ManageExpense = ({ route, navigation }) => {
   }
 
   function deleteExpenseHandler () {
+    dispatch(deleteExpenses({id:27}))
     closeManageExpenses()
   }
   function cancelHandler () {
     closeManageExpenses()
   }
   function confirmedHandler () {
+    const expense = {
+      id: 27,
+      title: '--------TESTING-------------',
+      amount: 85.0,
+      date: daysAgo(30) 
+    }
+    dispatch(addExpenses(expense))
     closeManageExpenses()
   }
 
