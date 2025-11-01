@@ -14,9 +14,19 @@ const ManageExpense = ({ route, navigation }) => {
     })
   }, [navigation])
 
-  function deleteExpenseHandler () {}
-  function cancelHandler () {}
-  function confirmedHandler () {}
+  function closeManageExpenses () {
+    navigation.goBack()
+  }
+
+  function deleteExpenseHandler () {
+    closeManageExpenses()
+  }
+  function cancelHandler () {
+    closeManageExpenses()
+  }
+  function confirmedHandler () {
+    closeManageExpenses()
+  }
 
   return (
     <View style={styles.container}>
