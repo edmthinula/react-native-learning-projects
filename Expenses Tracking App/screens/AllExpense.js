@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { GlobalStyles } from '../constants/styles'
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput'
 import { useSelector } from 'react-redux'
