@@ -1,18 +1,16 @@
-import { useLayoutEffect } from 'react'
+import { useContext, useLayoutEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import IconButton from '../UI/IconButton'
 import { GlobalStyles } from '../constants/styles'
 import Button from '../UI/Button'
-import { useDispatch, useSelector } from 'react-redux'
-import { addExpenses ,deleteExpenses } from '../store/Expenses'
-import { daysAgo } from '../data/starting-data'
-import { ExpensesData } from '../data/starting-data'
+import { useDispatch} from 'react-redux'
+import { addExpenses ,deleteExpenses,updateExpense } from '../store/Expenses'
+import { daysAgo } from '../util/date'
 
 const ManageExpense = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId
   const isEditing = !!editedExpenseId
   const dispatch = useDispatch()
-  const AllExpense = useSelector(state => state.expenses)
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -20,26 +18,29 @@ const ManageExpense = ({ route, navigation }) => {
     })
   }, [navigation])
 
-  function closeManageExpenses () {
+  function deleteExpenseHandler () {
+    expensesCtx.deleteExpense(editedExpenseId)
     navigation.goBack()
   }
 
   function deleteExpenseHandler () {
-    dispatch(deleteExpenses({id:27}))
-    closeManageExpenses()
+    dispatch(deleteExpenses({id:editedExpenseId}))
+    navigation.goBack()
   }
   function cancelHandler () {
-    closeManageExpenses()
+    navigation.goBack()
   }
   function confirmedHandler () {
-    const expense = {
-      id: 27,
-      title: '--------TESTING-------------',
-      amount: 85.0,
-      date: daysAgo(30) 
+    if(isEditing){
+      dispatch(updateExpense({
+        id:editedExpenseId,date:daysAgo(4),amount:289 , title:'Ryzen 7 5700X'
+      }))
+    }else{
+      dispatch(addExpenses({
+        id:14,date:daysAgo(3),amount: 34,title:'Testing'
+      }))
     }
-    dispatch(addExpenses(expense))
-    closeManageExpenses()
+    navigation.goBack()
   }
 
   return (

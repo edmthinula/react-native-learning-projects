@@ -20,10 +20,22 @@ export const expensesSlice = createSlice({
       state.expenses = state.expenses.filter(
         expense => expense.id !== action.payload.id
       )
+    },
+    updateExpense: (state, action) => {
+      const index = state.expenses.findIndex(
+        expense => expense.id === action.payload.id
+      )
+      if (index >= 0) {
+        state.expenses[index] = {
+          ...state.expenses[index],
+          ...action.payload
+        }
+      }
     }
   }
 })
 
-export const { addExpenses, deleteExpenses } = expensesSlice.actions
+export const { addExpenses, deleteExpenses, updateExpense } =
+  expensesSlice.actions
 
 export default expensesSlice.reducer

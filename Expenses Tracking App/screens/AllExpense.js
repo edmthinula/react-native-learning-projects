@@ -7,7 +7,7 @@ const AllExpense = () => {
   const AllExpense = useSelector(state => state.expenses)
   return (
     <View style={styles.root}>
-      <ExpensesOutput expenses={AllExpense.expenses} title='Total' />
+      <ExpensesOutput expenses={AllExpense.expenses} title='Total' fallBackText='No registered expenses found'/>
     </View>
   )
 }
