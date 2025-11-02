@@ -1,12 +1,14 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { GlobalStyles } from '../constants/styles'
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput'
-import { ExpensesData } from '../data/starting-data'
+import { useContext } from 'react'
+import { ExpensesContext } from '../store/Expenses-context'
 
 const AllExpense = () => {
+  const {expenses} = useContext(ExpensesContext)
   return (
     <View style={styles.root}>
-      <ExpensesOutput expenses={ExpensesData} title='Total' />
+      <ExpensesOutput expenses={expenses} title='Total' />
     </View>
   )
 }

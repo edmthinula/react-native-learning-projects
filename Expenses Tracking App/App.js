@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons'
 import 'react-native-gesture-handler'
 import { GlobalStyles } from './constants/styles'
 import IconButton from './UI/IconButton'
+import ExpensesProvider from './store/Expenses-context'
 
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
@@ -82,27 +83,29 @@ export default function App () {
   return (
     <>
       <StatusBar style='light' />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-            headerTintColor: 'white'
-          }}
-        >
-          <Stack.Screen
-            name='ExpensesOverview'
-            options={{ headerShown: false }}
-            component={ExpenseOverview}
-          />
-          <Stack.Screen
-            name='Manage'
-            component={ManageExpenseScreen}
-            options={{
-              presentation: 'modal'
+      <ExpensesProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+              headerTintColor: 'white'
             }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name='ExpensesOverview'
+              options={{ headerShown: false }}
+              component={ExpenseOverview}
+            />
+            <Stack.Screen
+              name='Manage'
+              component={ManageExpenseScreen}
+              options={{
+                presentation: 'modal'
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ExpensesProvider>
     </>
   )
 }
