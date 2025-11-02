@@ -1,42 +1,55 @@
-import React, { createContext, useMemo, useState } from 'react'
+import React, { createContext, useMemo, useReducer } from 'react'
 import { ExpensesData } from '../data/starting-data'
 
 export const ExpensesContext = createContext({
   expenses: [],
   addExpense: (expense) => {},
   deleteExpense: (id) => {},
-  editExpense: (newExpense) => {}
+  updateExpense: (newExpense) => {}
 })
 
-const ExpensesProvider = ({ children }) => {
-  const [expenses, setExpenses] = useState(ExpensesData)
+function expensesReducer(state, action) {
+  switch (action.type) {
+    case 'ADD':
+      return [action.payload, ...state]
 
-  function addExpense (expense) {
-    setExpenses(prevExpenses => [...prevExpenses, expense])
-  }
-
-  function deleteExpense (id) {
-    setExpenses(currentExpenses =>
-      currentExpenses.filter(expense => expense.id !== id)
-    )
-  }
-
-  function editExpense (newExpense) {
-    setExpenses(currentExpenses =>
-      currentExpenses.map(expense =>
-        expense.id === newExpense.id ? { ...expense, ...newExpense } : expense
+    case 'UPDATE':
+      return state.map(expense =>
+        expense.id === action.payload.id
+          ? { ...expense, ...action.payload }
+          : expense
       )
-    )
+    case 'DELETE':
+      return state.filter(expense => expense.id !== action.payload)
+
+    default:
+      return state
+  }
+}
+
+const ExpensesProvider = ({ children }) => {
+  const [expensesState, dispatch] = useReducer(expensesReducer, ExpensesData)
+
+  function addExpense(expenseData) {
+    dispatch({ type: 'ADD', payload: expenseData })
+  }
+
+  function deleteExpense(id) {
+    dispatch({ type: 'DELETE', payload: id })
+  }
+
+  function updateExpense(expenseData) {
+    dispatch({ type: 'UPDATE', payload: expenseData })
   }
 
   const value = useMemo(
     () => ({
-      expenses,
-      addExpense,
-      deleteExpense,
-      editExpense
+      expenses: expensesState,
+      addExpense: addExpense,
+      deleteExpense : deleteExpense,
+      updateExpense : updateExpense
     }),
-    [expenses]
+    [expensesState]
   )
 
   return (

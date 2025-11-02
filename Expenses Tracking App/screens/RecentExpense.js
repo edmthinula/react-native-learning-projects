@@ -1,15 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { GlobalStyles } from '../constants/styles'
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput'
-import { ExpensesData } from '../data/starting-data'
 import { useContext } from 'react'
 import { ExpensesContext } from '../store/Expenses-context'
+import { daysAgo } from '../util/date'
 
 const RecentExpense = () => {
-  const {expenses} = useContext(ExpensesContext)
+  const { expenses } = useContext(ExpensesContext)
+  const recentExpenses = expenses.filter(expense => expense.date > daysAgo(7))
   return (
     <View style={styles.root}>
-      <ExpensesOutput expenses={expenses} title='7 Days Later' />
+      <ExpensesOutput expenses={recentExpenses} title='Last 7 Days' />
     </View>
   )
 }

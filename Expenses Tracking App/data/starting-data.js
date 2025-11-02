@@ -1,12 +1,5 @@
 import Expense from '../models/Expense'
-import { formatDate } from '../util/date'
-
-// Helper function: get a date 'n' days ago
-const daysAgo = n => {
-  const date = new Date()
-  date.setDate(date.getDate() - n)
-  return formatDate(date)
-}
+import { formatDate , daysAgo } from '../util/date'
 
 // Create dummy data dynamically
 export const ExpensesData = [
