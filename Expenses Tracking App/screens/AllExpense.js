@@ -8,7 +8,7 @@ const AllExpense = () => {
   const {expenses} = useContext(ExpensesContext)
   return (
     <View style={styles.root}>
-      <ExpensesOutput expenses={expenses} title='Total' />
+      <ExpensesOutput expenses={expenses} title='Total' fallBackText='No registered expenses found' />
     </View>
   )
 }

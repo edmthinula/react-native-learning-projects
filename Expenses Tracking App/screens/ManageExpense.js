@@ -1,31 +1,39 @@
-import { useLayoutEffect } from 'react'
+import { useContext, useLayoutEffect } from 'react'
 import { StyleSheet, View } from 'react-native'
 import IconButton from '../UI/IconButton'
 import { GlobalStyles } from '../constants/styles'
 import Button from '../UI/Button'
+import { ExpensesContext } from '../store/Expenses-context'
+import { daysAgo } from '../util/date'
 
 const ManageExpense = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId
   const isEditing = !!editedExpenseId
-
+  const expensesCtx = useContext(ExpensesContext)
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isEditing ? 'Edit Expense' : 'Add Expense'
     })
   }, [navigation])
 
-  function closeManageExpenses () {
+  function deleteExpenseHandler () {
+    expensesCtx.deleteExpense(editedExpenseId)
     navigation.goBack()
   }
-
-  function deleteExpenseHandler () {
-    closeManageExpenses()
-  }
   function cancelHandler () {
-    closeManageExpenses()
+    navigation.goBack()
   }
   function confirmedHandler () {
-    closeManageExpenses()
+    if(isEditing){
+      expensesCtx.updateExpense({
+        id:editedExpenseId,date:daysAgo(4),amount:289 , title:'Ryzen 7 5700X'
+      })
+    }else{
+      expensesCtx.addExpense({
+        id:14,date:daysAgo(3),amount: 34,title:'Testing'
+      })
+    }
+    navigation.goBack()
   }
 
   return (

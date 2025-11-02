@@ -2,7 +2,7 @@ import { FlatList, View, StyleSheet, Text } from 'react-native'
 import Expenses from './Expenses'
 import { GlobalStyles } from '../../constants/styles'
 
-const ExpensesOutput = ({ expenses, title }) => {
+const ExpensesOutput = ({ expenses, title, fallBackText }) => {
   const total = expenses.reduce((sum, expense) => {
     return sum + expense.amount
   }, 0)
@@ -17,17 +17,22 @@ const ExpensesOutput = ({ expenses, title }) => {
     }
     return <Expenses {...ExpenseProps} />
   }
+  let content = <Text style={styles.infoText}>{fallBackText}</Text>
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.amountTag}>${total.toFixed(2)}</Text>
       </View>
-      <FlatList
-        data={expenses}
-        keyExtractor={expense => expense.id}
-        renderItem={renderExpense}
-      />
+      {expenses.length > 0 ? (
+        <FlatList
+          data={expenses}
+          keyExtractor={expense => expense.id}
+          renderItem={renderExpense}
+        />
+      ) : (
+        content
+      )}
     </View>
   )
 }
@@ -58,5 +63,11 @@ const styles = StyleSheet.create({
   },
   title: {
     color: GlobalStyles.colors.primary500
+  },
+  infoText: {
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 32
   }
 })
