@@ -5,6 +5,7 @@ import { GlobalStyles } from '../constants/styles'
 import Button from '../UI/Button'
 import { ExpensesContext } from '../store/Expenses-context'
 import { daysAgo } from '../util/date'
+import ExpenseForm from '../components/ExpensesOutput/ManageExpense/ExpenseForm'
 
 const ManageExpense = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId
@@ -56,6 +57,7 @@ const ManageExpense = ({ route, navigation }) => {
           />
         </View>
       )}
+      <ExpenseForm/>
     </View>
   )
 }
