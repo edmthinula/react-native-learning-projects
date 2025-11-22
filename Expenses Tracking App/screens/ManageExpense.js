@@ -14,8 +14,7 @@ const ManageExpense = ({ route, navigation }) => {
     navigation.setOptions({
       title: isEditing ? 'Edit Expense' : 'Add Expense'
     })
-  }, [navigation])
-
+  }, [navigation, isEditing])
   function deleteExpenseHandler () {
     expensesCtx.deleteExpense(editedExpenseId)
     navigation.goBack()

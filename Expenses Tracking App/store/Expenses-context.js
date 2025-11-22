@@ -3,12 +3,12 @@ import { ExpensesData } from '../data/starting-data'
 
 export const ExpensesContext = createContext({
   expenses: [],
-  addExpense: (expense) => {},
-  deleteExpense: (id) => {},
-  updateExpense: (newExpense) => {}
+  addExpense: expense => {},
+  deleteExpense: id => {},
+  updateExpense: newExpense => {}
 })
 
-function expensesReducer(state, action) {
+function expensesReducer (state, action) {
   switch (action.type) {
     case 'ADD':
       return [action.payload, ...state]
@@ -16,7 +16,12 @@ function expensesReducer(state, action) {
     case 'UPDATE':
       return state.map(expense =>
         expense.id === action.payload.id
-          ? { ...expense, ...action.payload }
+          ? {
+              id: expense.id,
+              title: action.payload.title ?? expense.title,
+              amount: action.payload.amount ?? expense.amount,
+              date: action.payload.date ?? expense.date
+            }
           : expense
       )
     case 'DELETE':
@@ -30,15 +35,15 @@ function expensesReducer(state, action) {
 const ExpensesProvider = ({ children }) => {
   const [expensesState, dispatch] = useReducer(expensesReducer, ExpensesData)
 
-  function addExpense(expenseData) {
+  function addExpense (expenseData) {
     dispatch({ type: 'ADD', payload: expenseData })
   }
 
-  function deleteExpense(id) {
+  function deleteExpense (id) {
     dispatch({ type: 'DELETE', payload: id })
   }
 
-  function updateExpense(expenseData) {
+  function updateExpense (expenseData) {
     dispatch({ type: 'UPDATE', payload: expenseData })
   }
 
@@ -46,8 +51,8 @@ const ExpensesProvider = ({ children }) => {
     () => ({
       expenses: expensesState,
       addExpense: addExpense,
-      deleteExpense : deleteExpense,
-      updateExpense : updateExpense
+      deleteExpense: deleteExpense,
+      updateExpense: updateExpense
     }),
     [expensesState]
   )

@@ -9,7 +9,7 @@ const RecentExpense = () => {
   const { expenses } = useContext(ExpensesContext)
   const recentExpenses = expenses.filter(
     expense =>
-      expense.date > daysAgo(7) && expense.date <= formatDate(new Date())
+      expense.date >= daysAgo(7) && expense.date <= formatDate(new Date())
   )
   return (
     <View style={styles.root}>
