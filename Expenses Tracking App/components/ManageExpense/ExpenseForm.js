@@ -34,9 +34,15 @@ const ExpenseForm = ({
   }
 
   function submitHandler () {
+    const dateString = inputs.date.value
+    const dateParts = dateString.split('-')
+    const parsedDate =
+      dateParts.length === 3
+        ? new Date(+dateParts[0], +dateParts[1] - 1, +dateParts[2])
+        : new Date('invalid')
     const expenseData = {
       amount: +inputs.amount.value,
-      date: new Date(inputs.date.value),
+      date: parsedDate,
       title: inputs.title.value
     }
 

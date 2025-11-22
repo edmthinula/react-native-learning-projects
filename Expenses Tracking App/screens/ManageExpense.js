@@ -31,7 +31,7 @@ const ManageExpense = ({ route, navigation }) => {
       })
     } else {
       expensesCtx.addExpense({
-        id: expensesCtx.expenses.length + 1, 
+        id: Date.now(), 
         ...expenseData
       })
     }

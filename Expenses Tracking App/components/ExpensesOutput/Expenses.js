@@ -14,7 +14,7 @@ const Expenses = ({ id, title, amount, date }) => {
       key={id}
       onPress={expensePressHandler}
       style={({ pressed }) => pressed && styles.pressed}
-      android_ripple
+      android_ripple={{ color: GlobalStyles.colors.primary50 }}
     >
       <View style={styles.innerContainer}>
         <View>
@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
   amountBox: {
     backgroundColor: GlobalStyles.colors.primary50,
     paddingHorizontal: 12,
-    paddingVertical: 4,
     textAlign: 'center',
     alignItems: 'center',
     paddingVertical: 10,
