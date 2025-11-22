@@ -2,9 +2,9 @@ import { FlatList, View, StyleSheet, Text } from 'react-native'
 import Expenses from './Expenses'
 import { GlobalStyles } from '../../constants/styles'
 
-const ExpensesOutput = ({ expenses, title, fallBackText }) => {
+const ExpensesOutput = ({ expenses = [], title, fallBackText }) => {
   const total = expenses.reduce((sum, expense) => {
-    return sum + expense.amount
+    return sum + (expense.amount || 0)
   }, 0)
 
   /**

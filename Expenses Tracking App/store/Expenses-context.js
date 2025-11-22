@@ -3,9 +3,9 @@ import { ExpensesData } from '../data/starting-data'
 
 export const ExpensesContext = createContext({
   expenses: [],
-  addExpense: (expense) => {},
-  deleteExpense: (id) => {},
-  updateExpense: (newExpense) => {}
+  addExpense: expense => {},
+  deleteExpense: id => {},
+  updateExpense: newExpense => {}
 })
 
 /**
@@ -27,7 +27,12 @@ function expensesReducer(state, action) {
     case 'UPDATE':
       return state.map(expense =>
         expense.id === action.payload.id
-          ? { ...expense, ...action.payload }
+          ? {
+              id: expense.id,
+              title: action.payload.title ?? expense.title,
+              amount: action.payload.amount ?? expense.amount,
+              date: action.payload.date ?? expense.date
+            }
           : expense
       )
     case 'DELETE':
@@ -69,8 +74,8 @@ const ExpensesProvider = ({ children }) => {
     () => ({
       expenses: expensesState,
       addExpense: addExpense,
-      deleteExpense : deleteExpense,
-      updateExpense : updateExpense
+      deleteExpense: deleteExpense,
+      updateExpense: updateExpense
     }),
     [expensesState]
   )

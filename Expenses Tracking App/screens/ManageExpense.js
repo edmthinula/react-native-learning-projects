@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import IconButton from '../UI/IconButton'
 import { GlobalStyles } from '../constants/styles'
 import { ExpensesContext } from '../store/Expenses-context'
-import ExpenseForm from '../components/ExpensesOutput/ManageExpense/ExpenseForm'
+import ExpenseForm from '../components/ManageExpense/ExpenseForm'
 
 const ManageExpense = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId
@@ -14,13 +14,12 @@ const ManageExpense = ({ route, navigation }) => {
     navigation.setOptions({
       title: isEditing ? 'Edit Expense' : 'Add Expense'
     })
-  }, [navigation])
-
   /**
    * Delete the expense being edited and return to the previous screen.
    *
    * Deletes the expense identified by the current editedExpenseId from the expenses context
    * and navigates back. */
+  }, [navigation, isEditing])
   function deleteExpenseHandler () {
     expensesCtx.deleteExpense(editedExpenseId)
     navigation.goBack()
@@ -43,7 +42,7 @@ const ManageExpense = ({ route, navigation }) => {
       })
     } else {
       expensesCtx.addExpense({
-        id: expensesCtx.expenses.length + 1, 
+        id: Date.now(), 
         ...expenseData
       })
     }

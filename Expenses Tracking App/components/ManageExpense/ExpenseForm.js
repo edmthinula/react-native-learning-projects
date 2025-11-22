@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import Input from './Input'
 import { useState } from 'react'
-import Button from '../../../UI/Button'
-import { formatDate } from '../../../util/date'
-import { GlobalStyles } from '../../../constants/styles'
+import Button from '../../UI/Button'
+import { formatDate } from '../../util/date'
+import { GlobalStyles } from '../../constants/styles'
 
 const ExpenseForm = ({
   onCancel,
@@ -47,9 +47,15 @@ const ExpenseForm = ({
    * If validation succeeds, formats the date with `formatDate` and calls `onSubmit` with the expense object.
    */
   function submitHandler () {
+    const dateString = inputs.date.value
+    const dateParts = dateString.split('-')
+    const parsedDate =
+      dateParts.length === 3
+        ? new Date(+dateParts[0], +dateParts[1] - 1, +dateParts[2])
+        : new Date('invalid')
     const expenseData = {
       amount: +inputs.amount.value,
-      date: new Date(inputs.date.value),
+      date: parsedDate,
       title: inputs.title.value
     }
 
@@ -83,7 +89,7 @@ const ExpenseForm = ({
         <Input
           label='Amount'
           style={styles.rowInput}
-          inValid={inputs.amount.isValid}
+          inValid={!inputs.amount.isValid}
           textInputConfig={{
             keyboardType: 'decimal-pad',
             onChangeText: inputChangeHandler.bind(this, 'amount'),
@@ -94,19 +100,17 @@ const ExpenseForm = ({
         <Input
           label='Date'
           style={styles.rowInput}
-          inValid={inputs.date.isValid}
+          inValid={!inputs.date.isValid}
           textInputConfig={{
             placeholder: 'YYYY-MM-DD',
             maxLength: 10,
             onChangeText: inputChangeHandler.bind(this, 'date'),
             value: inputs.date.value
           }}
-        />
-      </View>
-
+        />      </View>
       <Input
         label='Title'
-        inValid={inputs.title.isValid}
+        inValid={!inputs.title.isValid}
         textInputConfig={{
           multiline: true,
           autoCorrect: false,

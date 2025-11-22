@@ -16,10 +16,9 @@ const Expenses = ({ id, title, amount, date }) => {
   }
   return (
     <Pressable
-      key={id}
       onPress={expensePressHandler}
       style={({ pressed }) => pressed && styles.pressed}
-      android_ripple
+      android_ripple={{ color: GlobalStyles.colors.primary50 }}
     >
       <View style={styles.innerContainer}>
         <View>
@@ -27,7 +26,7 @@ const Expenses = ({ id, title, amount, date }) => {
           <Text style={styles.textBase}>{date}</Text>
         </View>
         <View style={styles.amountBox}>
-          <Text style={styles.amountTag}>{amount.toFixed(2)}</Text>
+          <Text style={styles.amountTag}>{amount?.toFixed(2) || '0.00'}</Text>
         </View>
       </View>
     </Pressable>
@@ -53,7 +52,6 @@ const styles = StyleSheet.create({
   amountBox: {
     backgroundColor: GlobalStyles.colors.primary50,
     paddingHorizontal: 12,
-    paddingVertical: 4,
     textAlign: 'center',
     alignItems: 'center',
     paddingVertical: 10,

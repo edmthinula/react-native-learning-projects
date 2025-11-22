@@ -1,4 +1,3 @@
-import React from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { GlobalStyles } from '../constants/styles'
 
@@ -7,13 +6,15 @@ const Button = ({ children, onPress, mode, style }) => {
     <View style={style}>
       <Pressable
         onPress={onPress}
-        style={({ pressed }) => pressed && styles.pressed}
+        style={({ pressed }) => [
+          styles.button,
+          mode === 'flat' && styles.flat,
+          pressed && styles.pressed
+        ]}
       >
-        <View style={[styles.button, mode === 'flat' && styles.flat]}>
-          <Text style={[styles.buttonText, mode === 'flat' && styles.flatText]}>
-            {children}
-          </Text>
-        </View>
+        <Text style={[styles.buttonText, mode === 'flat' && styles.flatText]}>
+          {children}
+        </Text>
       </Pressable>
     </View>
   )
