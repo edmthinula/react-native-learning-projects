@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native'
 import IconButton from '../UI/IconButton'
 import { GlobalStyles } from '../constants/styles'
 import { ExpensesContext } from '../store/Expenses-context'
-import ExpenseForm from '../components/ExpensesOutput/ManageExpense/ExpenseForm'
+import ExpenseForm from '../components/ManageExpense/ExpenseForm'
 
 const ManageExpense = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId

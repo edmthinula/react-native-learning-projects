@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from 'react-native'
 import Input from './Input'
 import { useState } from 'react'
-import Button from '../../../UI/Button'
-import { formatDate } from '../../../util/date'
-import { GlobalStyles } from '../../../constants/styles'
+import Button from '../../UI/Button'
+import { formatDate } from '../../util/date'
+import { GlobalStyles } from '../../constants/styles'
 
 const ExpenseForm = ({
   onCancel,
