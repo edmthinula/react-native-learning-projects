@@ -15,6 +15,16 @@ import ExpensesProvider from './store/Expenses-context'
 const Tab = createBottomTabNavigator()
 const Stack = createStackNavigator()
 
+/**
+ * Root application component that configures navigation, theming, and global expense state.
+ *
+ * Renders a bottom tab navigator with "Recent" and "All" expense screens, embeds those tabs
+ * in a stack navigator that exposes a modal "Manage" screen, and wraps the tree with an
+ * ExpensesProvider and NavigationContainer. The header includes an add button that opens the
+ * Manage screen.
+ *
+ * @returns {JSX.Element} The app's root React element tree.
+ */
 export default function App () {
   function ExpenseOverview ({ navigation }) {
     function pressHandler () {

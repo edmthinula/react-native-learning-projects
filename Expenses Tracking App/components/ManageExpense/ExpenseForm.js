@@ -26,6 +26,11 @@ const ExpenseForm = ({
     }
   })
 
+  /**
+   * Updates a specific input field's value and marks that field as valid while preserving other fields' state.
+   * @param {string} inputIdentifier - Key of the input to update (e.g. 'amount', 'date', 'title').
+   * @param {string} enteredText - New text value for the specified input.
+   */
   function inputChangeHandler (inputIdentifier, enteredText) {
     setInputs(crntInputs => ({
       ...crntInputs,
@@ -33,6 +38,14 @@ const ExpenseForm = ({
     }))
   }
 
+  /**
+   * Validate current inputs, format the date, and submit the expense data via `onSubmit`.
+   *
+   * Constructs an expense object from the component's inputs (converting amount to a number and parsing date),
+   * validates that amount is a number greater than 0, date is a valid Date, and title is non-empty.
+   * If any validation fails, updates each input's `isValid` flag and aborts submission.
+   * If validation succeeds, formats the date with `formatDate` and calls `onSubmit` with the expense object.
+   */
   function submitHandler () {
     const dateString = inputs.date.value
     const dateParts = dateString.split('-')

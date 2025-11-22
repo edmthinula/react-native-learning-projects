@@ -6,6 +6,12 @@ const ExpensesOutput = ({ expenses = [], title, fallBackText }) => {
   const total = expenses.reduce((sum, expense) => {
     return sum + (expense.amount || 0)
   }, 0)
+
+  /**
+   * Render a single expense item as an Expenses component.
+   * @param {Object} itemData - FlatList renderItem object whose `item` is an expense with `id`, `title`, `amount`, and `date`.
+   * @returns {JSX.Element} The Expenses component for the provided expense item.
+   */
   function renderExpense (itemData) {
     const item = itemData.item
     const ExpenseProps = {
