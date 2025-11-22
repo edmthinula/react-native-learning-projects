@@ -16,13 +16,25 @@ const ManageExpense = ({ route, navigation }) => {
     })
   }, [navigation])
 
+  /**
+   * Delete the expense being edited and return to the previous screen.
+   *
+   * Deletes the expense identified by the current editedExpenseId from the expenses context
+   * and navigates back. */
   function deleteExpenseHandler () {
     expensesCtx.deleteExpense(editedExpenseId)
     navigation.goBack()
   }
+  /**
+   * Cancel the current operation and return to the previous screen.
+   */
   function cancelHandler () {
     navigation.goBack()
   }
+  /**
+   * Saves the provided expense data: updates an existing expense when editing or adds a new expense otherwise, then navigates back.
+   * @param {Object} expenseData - Expense properties to persist (for example: `amount`, `date`, and `description`).
+   */
   function confirmedHandler (expenseData) {
     if (isEditing) {
       expensesCtx.updateExpense({

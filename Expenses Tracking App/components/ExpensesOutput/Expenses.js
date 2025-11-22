@@ -4,6 +4,11 @@ import { useNavigation } from '@react-navigation/native'
 
 const Expenses = ({ id, title, amount, date }) => {
   const navigation = useNavigation()
+  /**
+   * Navigate to the "Manage" screen for this expense.
+   *
+   * Passes the current expense's id as the `expenseId` navigation parameter.
+   */
   function expensePressHandler () {
     navigation.navigate('Manage', {
       expenseId: id
