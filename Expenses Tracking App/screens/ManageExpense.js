@@ -4,6 +4,7 @@ import IconButton from '../UI/IconButton'
 import { GlobalStyles } from '../constants/styles'
 import { ExpensesContext } from '../store/Expenses-context'
 import ExpenseForm from '../components/ManageExpense/ExpenseForm'
+import { storeExpense } from '../util/http'
 
 const ManageExpense = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId
@@ -32,7 +33,7 @@ const ManageExpense = ({ route, navigation }) => {
   }
   /**
    * Saves the provided expense data: updates an existing expense when editing or adds a new expense otherwise, then navigates back.
-   * @param {Object} expenseData - Expense properties to persist (for example: `amount`, `date`, and `description`).
+   * @param {Object} expenseData - Expense properties to persist (for example: `amount`, `date`, and `title`).
    */
   function confirmedHandler (expenseData) {
     if (isEditing) {
@@ -41,6 +42,7 @@ const ManageExpense = ({ route, navigation }) => {
         ...expenseData
       })
     } else {
+      storeExpense(expenseData)
       expensesCtx.addExpense({
         id: Date.now(), 
         ...expenseData

@@ -96,7 +96,6 @@ const ExpenseForm = ({
             value: inputs.amount.value
           }}
         />
-
         <Input
           label='Date'
           style={styles.rowInput}
@@ -107,7 +106,8 @@ const ExpenseForm = ({
             onChangeText: inputChangeHandler.bind(this, 'date'),
             value: inputs.date.value
           }}
-        />      </View>
+        />
+      </View>
       <Input
         label='Title'
         inValid={!inputs.title.isValid}
