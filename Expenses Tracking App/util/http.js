@@ -11,6 +11,9 @@ export async function storeExpense (expenseData) {
 export async function fetchExpense () {
   const response = await axios.get(BACKEND_URL + '/expense.json')
   const expense = []
+  if (!response.data) {
+    return expense
+  }
   for (const key in response.data) {
     const expenseObj = {
       id: key,
@@ -22,11 +25,10 @@ export async function fetchExpense () {
   }
   return expense
 }
-
 export function updateExpense (id, expenseData) {
   return axios.put(BACKEND_URL + `/expense/${id}.json`, expenseData)
 }
 
 export function deleteExpense (id) {
-  axios.delete(BACKEND_URL + `/expense/${id}.json`)
+  return axios.delete(BACKEND_URL + `/expense/${id}.json`)
 }

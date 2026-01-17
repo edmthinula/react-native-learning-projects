@@ -5,8 +5,7 @@ import Button from './Button'
 function ErrorOverlay ({ text , onConfirm}) {
   return (
     <View style={styles.container}>
-      <Text style={[styles.text, styles.title]}>An error Occurred!</Text>
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, styles.title]}>An Error Occurred!</Text>      <Text style={styles.text}>{text}</Text>
       <Button onPress={onConfirm}>Okay</Button>
     </View>
   )

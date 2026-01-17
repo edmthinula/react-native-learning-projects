@@ -25,8 +25,7 @@ function expensesReducer (state, action) {
     case 'ADD':
       return [action.payload, ...state]
     case 'SET':
-      const inverted = action.payload.reverse()
-      return inverted
+      return [...action.payload].reverse()
     case 'UPDATE':
       return state.map(expense =>
         expense.id === action.payload.id

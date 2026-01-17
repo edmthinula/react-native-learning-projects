@@ -28,16 +28,15 @@ const ManageExpense = ({ route, navigation }) => {
      * and navigates back. */
   }, [navigation, isEditing])
   async function deleteExpenseHandler () {
-    setIsLoading(true, 'Deleting expense..')
+    setIsLoading({ loading: true, message: 'Deleting expense..' })
     try {
       await deleteExpense(editedExpenseId)
       expensesCtx.deleteExpense(editedExpenseId)
+      setIsLoading({ loading: false, message: '' })
       navigation.goBack()
     } catch (error) {
-      setIsLoading(false, '')
       setError('Could not delete expense!')
-    } finally {
-      setIsLoading(false, '')
+      setIsLoading({ loading: false, message: '' })
     }
   }
   /**
@@ -51,10 +50,10 @@ const ManageExpense = ({ route, navigation }) => {
    * @param {Object} expenseData - Expense properties to persist (for example: `amount`, `date`, and `title`).
    */
   async function confirmedHandler (expenseData) {
-    setIsLoading(true, '')
+    setIsLoading(prev => ({ ...prev, loading: true, message: '' }))
     if (isEditing) {
       try {
-        setIsLoading(prev => ({ ...prev, message: 'Updating expense..' }))
+        setIsLoading(prev => ({ ...prev, loading: true, message: 'Updating expense..' }))
         await updateExpense(editedExpenseId, expenseData)
         expensesCtx.updateExpense({
           id: editedExpenseId,
@@ -62,14 +61,14 @@ const ManageExpense = ({ route, navigation }) => {
         })
         navigation.goBack()
       } catch (error) {
-        setIsLoading(false, '')
+        setIsLoading(prev => ({ ...prev, loading: false, message: '' }))
         setError('Could not update expense!')
       } finally {
-        setIsLoading(false, '')
+        setIsLoading(prev => ({ ...prev, loading: false, message: '' }))
       }
     } else {
       try {
-        setIsLoading(prev => ({ ...prev, message: 'Adding expense..' }))
+        setIsLoading(prev => ({ ...prev, loading: true, message: 'Adding expense..' }))
         const id = await storeExpense(expenseData)
         expensesCtx.addExpense({
           id: id,
@@ -77,10 +76,10 @@ const ManageExpense = ({ route, navigation }) => {
         })
         navigation.goBack()
       } catch (error) {
-        setIsLoading(false, '')
+        setIsLoading(prev => ({ ...prev, loading: false, message: '' }))
         setError('Could not add expense!')
       } finally {
-        setIsLoading(false, '')
+        setIsLoading(prev => ({ ...prev, loading: false, message: '' }))
       }
     }
   }

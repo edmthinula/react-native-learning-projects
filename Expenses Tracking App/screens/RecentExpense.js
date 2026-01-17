@@ -28,7 +28,7 @@ const RecentExpense = () => {
     getExpenses()
   }, [])
 
-  function errorHandler(){
+  function errorHandler () {
     setError(null)
   }
 
@@ -40,8 +40,7 @@ const RecentExpense = () => {
   }
 
   const recentExpenses = expensesCtx.expenses.filter(
-    expense =>
-      expense.date >= daysAgo(7) && expense.date <= formatDate(new Date())
+    expense => expense.date >= daysAgo(7) && expense.date <= new Date()
   )
   return (
     <View style={styles.root}>
