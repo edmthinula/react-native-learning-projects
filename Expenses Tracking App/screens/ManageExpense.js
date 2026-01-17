@@ -35,16 +35,16 @@ const ManageExpense = ({ route, navigation }) => {
    * Saves the provided expense data: updates an existing expense when editing or adds a new expense otherwise, then navigates back.
    * @param {Object} expenseData - Expense properties to persist (for example: `amount`, `date`, and `title`).
    */
-  function confirmedHandler (expenseData) {
+  async function confirmedHandler (expenseData) {
     if (isEditing) {
       expensesCtx.updateExpense({
         id: editedExpenseId,
         ...expenseData
       })
     } else {
-      storeExpense(expenseData)
+      const id = await storeExpense(expenseData)
       expensesCtx.addExpense({
-        id: Date.now(), 
+        id: id, 
         ...expenseData
       })
     }
