@@ -1,29 +1,44 @@
-import { useContext, useLayoutEffect } from 'react'
+import { useContext, useLayoutEffect, useState } from 'react'
 import { StyleSheet, View } from 'react-native'
 import IconButton from '../UI/IconButton'
 import { GlobalStyles } from '../constants/styles'
 import { ExpensesContext } from '../store/Expenses-context'
 import ExpenseForm from '../components/ManageExpense/ExpenseForm'
-import { storeExpense } from '../util/http'
+import { deleteExpense, storeExpense, updateExpense } from '../util/http'
+import LoadingOverlay from '../UI/LoadingOverlay'
+import ErrorOverlay from '../UI/ErrorOverlay'
 
 const ManageExpense = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId
   const isEditing = !!editedExpenseId
   const expensesCtx = useContext(ExpensesContext)
-  const selectedExpense = expensesCtx.expenses.find(expense => expense.id === editedExpenseId)
+  const selectedExpense = expensesCtx.expenses.find(
+    expense => expense.id === editedExpenseId
+  )
+  const [isLoading, setIsLoading] = useState({ loading: false, message: '' })
+  const [error, setError] = useState()
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isEditing ? 'Edit Expense' : 'Add Expense'
     })
-  /**
-   * Delete the expense being edited and return to the previous screen.
-   *
-   * Deletes the expense identified by the current editedExpenseId from the expenses context
-   * and navigates back. */
+    /**
+     * Delete the expense being edited and return to the previous screen.
+     *
+     * Deletes the expense identified by the current editedExpenseId from the expenses context
+     * and navigates back. */
   }, [navigation, isEditing])
-  function deleteExpenseHandler () {
-    expensesCtx.deleteExpense(editedExpenseId)
-    navigation.goBack()
+  async function deleteExpenseHandler () {
+    setIsLoading(true, 'Deleting expense..')
+    try {
+      await deleteExpense(editedExpenseId)
+      expensesCtx.deleteExpense(editedExpenseId)
+      navigation.goBack()
+    } catch (error) {
+      setIsLoading(false, '')
+      setError('Could not delete expense!')
+    } finally {
+      setIsLoading(false, '')
+    }
   }
   /**
    * Cancel the current operation and return to the previous screen.
@@ -36,19 +51,50 @@ const ManageExpense = ({ route, navigation }) => {
    * @param {Object} expenseData - Expense properties to persist (for example: `amount`, `date`, and `title`).
    */
   async function confirmedHandler (expenseData) {
+    setIsLoading(true, '')
     if (isEditing) {
-      expensesCtx.updateExpense({
-        id: editedExpenseId,
-        ...expenseData
-      })
+      try {
+        setIsLoading(prev => ({ ...prev, message: 'Updating expense..' }))
+        await updateExpense(editedExpenseId, expenseData)
+        expensesCtx.updateExpense({
+          id: editedExpenseId,
+          ...expenseData
+        })
+        navigation.goBack()
+      } catch (error) {
+        setIsLoading(false, '')
+        setError('Could not update expense!')
+      } finally {
+        setIsLoading(false, '')
+      }
     } else {
-      const id = await storeExpense(expenseData)
-      expensesCtx.addExpense({
-        id: id, 
-        ...expenseData
-      })
+      try {
+        setIsLoading(prev => ({ ...prev, message: 'Adding expense..' }))
+        const id = await storeExpense(expenseData)
+        expensesCtx.addExpense({
+          id: id,
+          ...expenseData
+        })
+        navigation.goBack()
+      } catch (error) {
+        setIsLoading(false, '')
+        setError('Could not add expense!')
+      } finally {
+        setIsLoading(false, '')
+      }
     }
+  }
+
+  function errorHandler () {
+    setError(null)
     navigation.goBack()
+  }
+
+  if (isLoading.loading) {
+    return <LoadingOverlay text={isLoading.message} />
+  }
+  if (error && !isLoading.loading) {
+    return <ErrorOverlay text={error} onConfirm={errorHandler} />
   }
 
   return (

@@ -20,6 +20,13 @@ export async function fetchExpense () {
     }
     expense.push(expenseObj)
   }
-  console.log(expense)
   return expense
+}
+
+export function updateExpense (id, expenseData) {
+  return axios.put(BACKEND_URL + `/expense/${id}.json`, expenseData)
+}
+
+export function deleteExpense (id) {
+  axios.delete(BACKEND_URL + `/expense/${id}.json`)
 }

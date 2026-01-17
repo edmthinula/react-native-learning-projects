@@ -1,20 +1,43 @@
 import { StyleSheet, View } from 'react-native'
 import { GlobalStyles } from '../constants/styles'
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { ExpensesContext } from '../store/Expenses-context'
 import { daysAgo, formatDate } from '../util/date'
 import { fetchExpense } from '../util/http'
+import LoadingOverlay from '../UI/LoadingOverlay'
+import ErrorOverlay from '../UI/ErrorOverlay'
 
 const RecentExpense = () => {
-  const  expensesCtx = useContext(ExpensesContext)
+  const expensesCtx = useContext(ExpensesContext)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState()
   useEffect(() => {
     async function getExpenses () {
-      const dbExpenses = await fetchExpense()
-      expensesCtx.setExpenses(dbExpenses)
+      setIsLoading(true)
+      try {
+        const dbExpenses = await fetchExpense()
+        expensesCtx.setExpenses(dbExpenses)
+      } catch (error) {
+        setIsLoading(false)
+        setError('Could not fetch expenses!')
+      } finally {
+        setIsLoading(false)
+      }
     }
     getExpenses()
   }, [])
+
+  function errorHandler(){
+    setError(null)
+  }
+
+  if (isLoading) {
+    return <LoadingOverlay text='Loading expenses...' />
+  }
+  if (error && !isLoading) {
+    return <ErrorOverlay text={error} onConfirm={errorHandler} />
+  }
 
   const recentExpenses = expensesCtx.expenses.filter(
     expense =>
