@@ -55,6 +55,14 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 
 ---
 
+### 💰 Expense Tracker App
+- Integrated **Firebase Realtime DB** for data persistence.
+- Used **Axios** for handling REST API requests (GET, POST, PUT, DELETE).
+- Implemented **Loading & Error overlays** for better User Experience.
+- Managed complex asynchronous state within the **Context API**.
+
+---
+
 ## 🧠 Learning Objectives
 
 - Learn **React Native fundamentals** from scratch.
