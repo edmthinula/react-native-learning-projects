@@ -39,9 +39,13 @@ const RecentExpense = () => {
     return <ErrorOverlay text={error} onConfirm={errorHandler} />
   }
 
-  const recentExpenses = expensesCtx.expenses.filter(
-    expense => expense.date >= daysAgo(7) && expense.date <= new Date()
-  )
+  const today = new Date()
+  const sevenDaysAgo = new Date(daysAgo(7))
+
+  const recentExpenses = expensesCtx.expenses.filter(expense => {
+    const expenseDate = new Date(expense.date)
+    return expenseDate >= sevenDaysAgo && expenseDate <= today
+  })
   return (
     <View style={styles.root}>
       <ExpensesOutput
