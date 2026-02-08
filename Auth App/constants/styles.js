@@ -1,7 +1,8 @@
 export const Colors = {
-  primary100: '#f9beda',
-  primary500: '#c30b64',
-  primary800: '#610440',
-  error100: '#fcdcbf',
-  error500: '#f37c13',
-}
+  primary100: '#d1fae5',
+  primary500: '#0f766e',
+  primary800: '#022c22',
+
+  error100: '#fee2e2',
+  error500: '#ffc5dd',
+};
