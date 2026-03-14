@@ -9,12 +9,12 @@ async function authenticate (mode, email, password) {
     password: password,
     returnSecureToken: true
   })
-  console.log(response)
+  return response.data
 }
-export async function createUser (email, password) {
-  await authenticate(Methods.signUp, email, password)
+export function createUser (email, password) {
+  return authenticate(Methods.signUp, email, password)
 }
 
-export async function login (email, password) {
-  await authenticate(Methods.signIn, email, password)
+export function login (email, password) {
+  return authenticate(Methods.signIn, email, password)
 }

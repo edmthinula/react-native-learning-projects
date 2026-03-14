@@ -4,13 +4,16 @@ import { login } from '../util/auth'
 import LoadingOverlay from '../components/ui/LoadingOverlay'
 import { AuthErrors } from '../constants/auth'
 import { Alert } from 'react-native'
+import { useAuthStore } from '../store/store'
 
 function LoginScreen () {
   const [isAuthenticating, setIsAuthenticating] = useState(false)
+  const authenticate = useAuthStore((state)=>state.authenticate)
   async function loginHandler ({ email, password }) {
     setIsAuthenticating(true)
     try {
-      await login(email, password)
+      const data = await login(email, password)
+      authenticate(data)
     } catch (error) {
       const firebaseError = error.response?.data?.error?.message
       console.log(firebaseError)
@@ -25,7 +28,6 @@ function LoginScreen () {
       } else if (firebaseError === AuthErrors.invalidLogin) {
         message = 'Invalid login attempt.'
       }
-
       Alert.alert('Authentication Failed', message)
       setIsAuthenticating(false)
     } finally {
