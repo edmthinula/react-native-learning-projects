@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Native_feature_App",
-    "slug": "Native_feature_App",
+    "name": "Native Feature App",
+    "slug": "Native Feature App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -30,6 +30,12 @@
         "expo-image-picker",
         {
          "cameraPermission":"the app needs access to your camera in order to take photos of your favorite places."
+        }
+      ],
+       [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Native Feature App to use your location."
         }
       ]
     ]
