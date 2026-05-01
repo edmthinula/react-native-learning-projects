@@ -1,4 +1,4 @@
-import { StyleSheet, View, Alert, Image } from 'react-native'
+import { StyleSheet, View, Alert, Image, Text } from 'react-native'
 import OutlinedButton from '../UI/OutlinedButton'
 import { Colors } from '../../constants/colors'
 import { getCurrentPositionAsync, PermissionStatus } from 'expo-location'

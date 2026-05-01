@@ -7,3 +7,5 @@ class Place {
     this.id = new Date().toString() + Math.random().toString()
   }
 }
+
+export default Place
