@@ -3,15 +3,34 @@ import OutlinedButton from '../UI/OutlinedButton'
 import { Colors } from '../../constants/colors'
 import { getCurrentPositionAsync, PermissionStatus } from 'expo-location'
 import { useForegroundPermissions } from 'expo-location'
-import { useState } from 'react'
-import {getMapPreview} from '../../util/location'
-import { useNavigation } from '@react-navigation/native'
+import { useEffect, useState } from 'react'
+import { getMapPreview } from '../../util/location'
+import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native'
 
-function LocationPicker () {
-  const [pickedLocation, setPicketLocation] = useState()
+function LocationPicker ({ onPickedLocation, formData }) {
+  const [pickedLocation, setPickedLocation] = useState()
   const navigation = useNavigation()
+  const route = useRoute()
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions()
+  const isFocused = useIsFocused()
+
+  useEffect(() => {
+    if (isFocused && route.params) {
+      const mapPickedLocation = {
+        lat: route.params.pickedLat,
+        lng: route.params.pickedLng
+      }
+      setPickedLocation(mapPickedLocation)
+    }
+  }, [route, isFocused])
+
+  useEffect(() => {
+    if (pickedLocation) {
+      onPickedLocation(pickedLocation)
+    }
+  }, [pickedLocation, onPickedLocation])
+
   async function verifyPermissions () {
     if (
       locationPermissionInformation.status === PermissionStatus.UNDETERMINED
@@ -35,11 +54,12 @@ function LocationPicker () {
       return
     }
     const location = await getCurrentPositionAsync()
-    setPicketLocation({
+    setPickedLocation({
       lat: location.coords.latitude,
       lng: location.coords.longitude
     })
   }
+
   let locationPreview = <Text>no location picked yet.</Text>
   if (pickedLocation) {
     locationPreview = (
@@ -49,9 +69,11 @@ function LocationPicker () {
       />
     )
   }
+
   function pickOnMapHandler () {
-    navigation.navigate("Map")
+    navigation.navigate('Map', { formData })
   }
+
   return (
     <View>
       <View style={styles.mapPreview}>{locationPreview}</View>
@@ -77,7 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Colors.primary100,
-    overflow:'hidden'
+    overflow: 'hidden'
   },
   actions: {
     flexDirection: 'row',
@@ -87,6 +109,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    borderRadius:4
+    borderRadius: 4
   }
 })

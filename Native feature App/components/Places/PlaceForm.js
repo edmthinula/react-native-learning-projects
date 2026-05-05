@@ -1,13 +1,41 @@
-import { useState } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { Colors } from '../../constants/colors'
 import ImagePicker from './ImagePicker'
 import LocationPicker from './LocationPicker'
+import Button from '../UI/Button'
+import { useRoute, useIsFocused } from '@react-navigation/native'
 
 function PlaceForm () {
   const [enteredTitle, setEnteredTitle] = useState('')
+  const [pickedLocation, setPickedLocation] = useState('')
+  const [selectedImage, setSelectedImage] = useState('')
+  const route = useRoute()
+  const isFocused = useIsFocused()
+
+  useEffect(() => {
+    if (isFocused && route.params) {
+      if (route.params.formData) {
+        setEnteredTitle(route.params.formData.title || '')
+        setSelectedImage(route.params.formData.image || '')
+        setPickedLocation(route.params.formData.location || '')
+      }
+    }
+  }, [route, isFocused])
+
   function changeTitleHandler (enteredTitle) {
     setEnteredTitle(enteredTitle)
+  }
+  const pickedLocationHandler = useCallback(location => {
+    setPickedLocation(location)
+  }, [])
+  const takeImageHandler = useCallback(imageUri => {
+    setSelectedImage(imageUri)
+  }, [])
+  function savePlaceHandler () {
+    console.log(enteredTitle)
+    console.log(selectedImage)
+    console.log(pickedLocation)
   }
   return (
     <ScrollView style={styles.form}>
@@ -19,8 +47,17 @@ function PlaceForm () {
           value={enteredTitle}
         />
       </View>
-      <ImagePicker/>
-      <LocationPicker/>
+      <ImagePicker value={selectedImage} onImageTaken={takeImageHandler} />
+      <LocationPicker 
+        value={pickedLocation} 
+        onPickedLocation={pickedLocationHandler}
+        formData={{
+          title: enteredTitle,
+          image: selectedImage,
+          location: pickedLocation
+        }}
+      />
+      <Button onPress={savePlaceHandler}>Add Place</Button>
     </ScrollView>
   )
 }

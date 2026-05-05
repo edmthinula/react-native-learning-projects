@@ -1,18 +1,55 @@
 import { StyleSheet, View, Alert } from 'react-native'
-import { useEffect } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import MapView, { Marker } from 'react-native-maps'
+import IconButton from '../components/UI/IconButton'
+import { useRoute } from '@react-navigation/native'
 
-function Map () {
-  useEffect(() => {
-    return () => {}
-  }, [])
+function Map ({ navigation }) {
+  const [selectedLocation, setSelectedLocation] = useState()
+  const route = useRoute()
 
   const region = {
     latitude: parseFloat(process.env.EXPO_PUBLIC_CENTER_LATITUDE || '7.0873'),
-    longitude: parseFloat(process.env.EXPO_PUBLIC_CENTER_LONGITUDE || '79.9925'),
+    longitude: parseFloat(
+      process.env.EXPO_PUBLIC_CENTER_LONGITUDE || '79.9925'
+    ),
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421
   }
+
+  function selectLocationHandler (event) {
+    const lat = event.nativeEvent.coordinate.latitude
+    const lng = event.nativeEvent.coordinate.longitude
+    setSelectedLocation({ lat: lat, lng: lng })
+  }
+
+  const savedPickedLocationHandler= useCallback(() => {
+    if (!selectedLocation) {
+      Alert.alert(
+        'No location picked!',
+        'You have to pick a location (by tapping on the map) first!'
+      )
+      return
+    }
+    navigation.navigate('AddPlace', {
+      pickedLat: selectedLocation.lat,
+      pickedLng: selectedLocation.lng,
+      formData: route.params?.formData
+    })
+  },[navigation,selectedLocation,route.params])
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: ({ tintColor }) => (
+        <IconButton
+          icon='save'
+          size={24}
+          color={tintColor}
+          onPress={savedPickedLocationHandler}
+        />
+      )
+    })
+  },[navigation,savedPickedLocationHandler])
 
   return (
     <View style={styles.container}>
@@ -26,18 +63,28 @@ function Map () {
         pitchEnabled={true}
         rotateEnabled={true}
         loadingEnabled={true}
-        loadingIndicatorColor="#00ff00"
+        loadingIndicatorColor='#00ff00'
         onMapReady={() => {}}
         onMapLoaded={() => {}}
         onRegionChangeComplete={() => {}}
         onRegionChange={() => {}}
-        onPress={() => {}}
+        onPress={selectLocationHandler}
         onLongPress={() => {}}
-        onError={(error) => {
+        onError={error => {
           Alert.alert('🔴 Map Error', JSON.stringify(error))
         }}
         onTilesLoaded={() => {}}
-      ></MapView>
+      >
+        {selectedLocation && (
+          <Marker
+            title='Picked location'
+            coordinate={{
+              latitude: selectedLocation.lat,
+              longitude: selectedLocation.lng
+            }}
+          />
+        )}
+      </MapView>
     </View>
   )
 }
@@ -46,10 +93,10 @@ export default Map
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   map: {
     width: '100%',
-    height: '100%',
+    height: '100%'
   }
 })
