@@ -5,10 +5,11 @@ import ImagePicker from './ImagePicker'
 import LocationPicker from './LocationPicker'
 import Button from '../UI/Button'
 import { useRoute, useIsFocused } from '@react-navigation/native'
+import Place from '../../models/place'
 
-function PlaceForm () {
+function PlaceForm ({ onCreatePlace }) {
   const [enteredTitle, setEnteredTitle] = useState('')
-  const [pickedLocation, setPickedLocation] = useState('')
+  const [pickedLocation, setPickedLocation] = useState(null)
   const [selectedImage, setSelectedImage] = useState('')
   const route = useRoute()
   const isFocused = useIsFocused()
@@ -33,9 +34,8 @@ function PlaceForm () {
     setSelectedImage(imageUri)
   }, [])
   function savePlaceHandler () {
-    console.log(enteredTitle)
-    console.log(selectedImage)
-    console.log(pickedLocation)
+    const placeData = new Place(enteredTitle, selectedImage, pickedLocation)
+    onCreatePlace(placeData)
   }
   return (
     <ScrollView style={styles.form}>
@@ -48,8 +48,8 @@ function PlaceForm () {
         />
       </View>
       <ImagePicker value={selectedImage} onImageTaken={takeImageHandler} />
-      <LocationPicker 
-        value={pickedLocation} 
+      <LocationPicker
+        value={pickedLocation}
         onPickedLocation={pickedLocationHandler}
         formData={{
           title: enteredTitle,

@@ -4,7 +4,7 @@ import { Colors } from '../../constants/colors'
 import { getCurrentPositionAsync, PermissionStatus } from 'expo-location'
 import { useForegroundPermissions } from 'expo-location'
 import { useEffect, useState } from 'react'
-import { getMapPreview } from '../../util/location'
+import { getAddress, getMapPreview } from '../../util/location'
 import { useNavigation, useRoute, useIsFocused } from '@react-navigation/native'
 
 function LocationPicker ({ onPickedLocation, formData }) {
@@ -26,9 +26,18 @@ function LocationPicker ({ onPickedLocation, formData }) {
   }, [route, isFocused])
 
   useEffect(() => {
-    if (pickedLocation) {
-      onPickedLocation(pickedLocation)
+    async function handleLocation () {
+      if (pickedLocation) {
+        try{
+
+          const address = await getAddress(pickedLocation.lat, pickedLocation.lng)
+          onPickedLocation({...pickedLocation,address:address})
+        }catch(error){
+          console.log("Could not fetch address",error)
+        }
+      }
     }
+    handleLocation()
   }, [pickedLocation, onPickedLocation])
 
   async function verifyPermissions () {
