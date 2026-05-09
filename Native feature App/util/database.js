@@ -1,4 +1,5 @@
 import * as SQLite from 'expo-sqlite';
+import { cache } from 'react';
 
 let db;
 
@@ -27,7 +28,6 @@ export async function insertPlace(place) {
   if (!db) {
     db = await SQLite.openDatabaseAsync('places');
   }
-
   try {
     const result = await db.runAsync(
       `INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?, ?, ?, ?, ?)`,
@@ -45,5 +45,20 @@ export async function insertPlace(place) {
   } catch (error) {
     console.error('Insert failed:', error);
     throw error;
+  }
+}
+
+export async function fetchPlaces(){
+  if(!db){
+    db = await SQLite.openDatabaseAsync('places');
+  }
+  try{
+    const result = await db.getAllAsync(
+      'SELECT * FROM places',
+    )
+    return result
+  }catch(error){
+    console.error('Fetching data failed'.error)
+    throw error
   }
 }

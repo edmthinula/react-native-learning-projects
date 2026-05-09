@@ -7,7 +7,7 @@ function PlaceItem ({ place, onSelect }) {
       style={({ pressed }) => [styles.item, pressed && styles.pressed]}
       onPress={onSelect}
     >
-      <Image style={styles.image} source={{ uri: place.imageUrl }} />
+      <Image style={styles.image} source={{ uri: place.imageUri }} />
       <View style={styles.info}>
         <Text style={styles.title}>{place.title}</Text>
         <Text style={styles.address}>{place.address}</Text>
