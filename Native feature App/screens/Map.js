@@ -5,25 +5,36 @@ import IconButton from '../components/UI/IconButton'
 import { useRoute } from '@react-navigation/native'
 
 function Map ({ navigation }) {
-  const [selectedLocation, setSelectedLocation] = useState()
   const route = useRoute()
 
+  const initialLocation = route.params.initialLat &&
+    route.params.initialLng && {
+      lat: route.params.initialLat,
+      lng: route.params.initialLng
+    }
+  const [selectedLocation, setSelectedLocation] = useState(initialLocation)
+
   const region = {
-    latitude: parseFloat(process.env.EXPO_PUBLIC_CENTER_LATITUDE || '7.0873'),
-    longitude: parseFloat(
-      process.env.EXPO_PUBLIC_CENTER_LONGITUDE || '79.9925'
-    ),
+    latitude: initialLocation
+      ? initialLocation.lat
+      : parseFloat(process.env.EXPO_PUBLIC_CENTER_LATITUDE || '7.0873'),
+    longitude: initialLocation
+      ? initialLocation.lng
+      : parseFloat(process.env.EXPO_PUBLIC_CENTER_LONGITUDE || '79.9925'),
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421
   }
 
   function selectLocationHandler (event) {
+    if (initialLocation){
+      return;
+    }
     const lat = event.nativeEvent.coordinate.latitude
     const lng = event.nativeEvent.coordinate.longitude
     setSelectedLocation({ lat: lat, lng: lng })
   }
 
-  const savedPickedLocationHandler= useCallback(() => {
+  const savedPickedLocationHandler = useCallback(() => {
     if (!selectedLocation) {
       Alert.alert(
         'No location picked!',
@@ -36,9 +47,12 @@ function Map ({ navigation }) {
       pickedLng: selectedLocation.lng,
       formData: route.params?.formData
     })
-  },[navigation,selectedLocation,route.params])
+  }, [navigation, selectedLocation, route.params])
 
   useLayoutEffect(() => {
+    if (initialLocation) {
+      return
+    }
     navigation.setOptions({
       headerRight: ({ tintColor }) => (
         <IconButton
@@ -49,7 +63,7 @@ function Map ({ navigation }) {
         />
       )
     })
-  },[navigation,savedPickedLocationHandler])
+  }, [navigation, savedPickedLocationHandler, initialLocation])
 
   return (
     <View style={styles.container}>

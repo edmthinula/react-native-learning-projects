@@ -10,6 +10,7 @@ import Map from './screens/Map'
 import { useEffect, useState } from 'react'
 import { init } from './util/database'
 import * as SplashScreen from 'expo-splash-screen'
+import PlaceDetails from './screens/PlaceDetails'
 
 const Stack = createNativeStackNavigator()
 SplashScreen.preventAutoHideAsync()
@@ -23,14 +24,14 @@ export default function App () {
         setDbInitialized(true)
       } catch (error) {
         console.warn('Database failed to load:', error)
-      }finally{
+      } finally {
         await SplashScreen.hideAsync()
       }
     }
     prepareDatabase()
   }, [])
-  if (!dbInitialized){
-    return null;
+  if (!dbInitialized) {
+    return null
   }
   return (
     <>
@@ -64,6 +65,13 @@ export default function App () {
             component={AddPlace}
           />
           <Stack.Screen name='Map' component={Map} />
+          <Stack.Screen
+            name='PlaceDetails'
+            component={PlaceDetails}
+            options={{
+              title: 'Loading Place...'
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>

@@ -1,5 +1,4 @@
 import * as SQLite from 'expo-sqlite';
-import { cache } from 'react';
 
 let db;
 
@@ -18,7 +17,6 @@ export async function init() {
     `);
     console.log('Database initialized successfully');
   } catch (error) {
-    console.error('Initialization failed:', error);
     throw error;
   }
 }
@@ -58,7 +56,21 @@ export async function fetchPlaces(){
     )
     return result
   }catch(error){
-    console.error('Fetching data failed'.error)
+    throw error
+  }
+}
+
+export async function fetchPlaceDetails(id) {
+  if(!db){
+    db = await SQLite.openDatabaseAsync('places')
+  }
+  try{
+    const result = await db.getFirstAsync(
+      'SELECT * FROM places WHERE id = ?',
+      [id]
+    )
+    return result
+  }catch(error){
     throw error
   }
 }
