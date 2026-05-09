@@ -1,9 +1,9 @@
 # 📱 React Native Learning Projects
 
 This repository contains a collection of **React Native apps** built while following a complete React Native course.  
-Each app focuses on learning a new concept — from fundamentals to advanced topics like navigation, state management, and security.
+Each app focuses on learning a new concept — from fundamentals to advanced topics like navigation, state management,low-level native device integration and security.
 
-> 🚧 This project is currently in progress (around 40% complete).  
+> 🚧 This project is currently in progress (around 70% complete).  
 > Future updates will include new apps, improvements, and refactoring as learning continues.
 
 ---
@@ -14,14 +14,32 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 - **React Navigation** (Stack, Drawer, Tabs)
 - **Zustand** (State Management & Persistence)
 - **Redux Toolkit / Context API**
-- **Firebase** (Authentication & Realtime DB)
-- **Axios** (REST API requests)
+- **APIs** Firebase Auth/Realtime DB, Google Maps API, Google Geocoding API
+- **Tooling** Axios, Environment Variables (app.config.js), React Hooks
 - **JavaScript (ES6+)**
 - **React Hooks** (`useState`, `useEffect`, `useContext`, `useCallback`)
+- **Database** SQLite (Modern Async API)
+- **Native Modules** Expo Camera, Location, Image Picker, MapView
 
 ---
 
 ## 🧾 Development Progress Summary
+
+### 📍 Native feature App (Latest)
+
+*   **Local SQLite Persistence:** Implemented a robust local storage solution using the modern **expo-sqlite Async API**, moving away from legacy callback-based transactions.
+    
+*   **Hardware Integration:**
+    
+    *   **Camera:** Integrated expo-image-picker with custom permission handling to capture high-quality photos.
+        
+    *   **Location:** Real-time GPS tracking using expo-location.
+        
+*   **Interactive Maps:** Full integration of react-native-maps allowing users to pick locations via a map interface or current GPS position.
+    
+*   **Reverse Geocoding:** Custom implementation of the **Google Geocoding API** to translate coordinates into human-readable addresses.
+    
+*   **Advanced Navigation Flow:** Managed complex state persistence using navigation parameters to prevent data loss when switching between the form and the map.
 
 ### 🔐 Auth App (Latest)
 - Implemented **Firebase Authentication** for secure login and signup.
@@ -79,6 +97,10 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 - Implement **Secure Authentication** and persistent user sessions.
 - Build **modular, maintainable, and responsive UI components**.
 - Prepare the codebase for **open-source contribution** and **portfolio showcasing**.
+*   **Device Hardware:** Mastering access to the Camera, Gallery, and GPS.
+*   **Native Persistence:** Understanding the lifecycle of local SQL databases on mobile devices.
+*   **Async Patterns:** Implementing modern async/await patterns for database and API synchronization.
+*   **Permission Management:** Building graceful fallbacks for system permissions (Camera, Location).
 
 ---
 
