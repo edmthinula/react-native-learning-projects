@@ -7,7 +7,7 @@ function AllPlaces ({ route }) {
   const [loadedPlaces, setLoadedPlaces] = useState([])
   const isFocused = useIsFocused()
   useEffect(() => {
-    async function loadPlaces () {
+    async function loadedPlaces (params) {
       try {
         const places = await fetchPlaces()
         setLoadedPlaces(places)
@@ -17,9 +17,9 @@ function AllPlaces ({ route }) {
     }
     if (isFocused) {
       // setLoadedPlaces(curPlaces => [...curPlaces, route.params.place])
-      loadPlaces()
+      loadedPlaces()
     }
-  }, [isFocused])
+  }, [isFocused, route])
   return <PlacesList places={loadedPlaces} />
 }
 

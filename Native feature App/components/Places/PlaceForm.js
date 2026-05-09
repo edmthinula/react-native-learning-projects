@@ -19,7 +19,7 @@ function PlaceForm ({ onCreatePlace }) {
       if (route.params.formData) {
         setEnteredTitle(route.params.formData.title || '')
         setSelectedImage(route.params.formData.image || '')
-        setPickedLocation(route.params.formData.location || '')
+        setPickedLocation(route.params.formData.location ?? null)
       }
     }
   }, [route, isFocused])
@@ -37,6 +37,8 @@ function PlaceForm ({ onCreatePlace }) {
     const placeData = new Place(enteredTitle, selectedImage, pickedLocation)
     onCreatePlace(placeData)
   }
+  // require an image and a valid pickedLocation (object with lat/lng)
+  const isFormValid = !!selectedImage && pickedLocation && pickedLocation.lat != null && pickedLocation.lng != null
   return (
     <ScrollView style={styles.form}>
       <View>
@@ -57,7 +59,7 @@ function PlaceForm ({ onCreatePlace }) {
           location: pickedLocation
         }}
       />
-      <Button onPress={savePlaceHandler}>Add Place</Button>
+      <Button onPress={savePlaceHandler} disabled={!isFormValid}>Add Place</Button>
     </ScrollView>
   )
 }

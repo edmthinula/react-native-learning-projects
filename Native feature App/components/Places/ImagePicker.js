@@ -1,4 +1,4 @@
-import { Alert, Button, Image, StyleSheet, View, Text } from 'react-native'
+import { Alert, Image, StyleSheet, View, Text } from 'react-native'
 import { Colors } from '../../constants/colors'
 import {
   launchCameraAsync,
@@ -19,7 +19,7 @@ function ImagePicker ({onImageTaken, value}) {
   const [cameraPermissionStatus, requestPermission] = useCameraPermissions()
 
   async function verifyPermissions () {
-    if (cameraPermissionStatus.status === PermissionStatus.UNDETERMINED) {
+    if (!cameraPermissionStatus?.status || cameraPermissionStatus.status === PermissionStatus.UNDETERMINED) {
       const permissionResponse = await requestPermission()
       return permissionResponse.granted
     }
@@ -42,8 +42,12 @@ function ImagePicker ({onImageTaken, value}) {
       aspect: [16, 9],
       quality: 0.5
     })
-    setPickedImage(image.assets[0].uri)
-    onImageTaken(image.assets[0].uri)
+    if (image.canceled || !image.assets || image.assets.length === 0) {
+      return
+    }
+    const imageUri = image.assets[0].uri
+    setPickedImage(imageUri)
+    onImageTaken(imageUri)
   }
   let imagePreview = <Text>No image taken yet.</Text>
   if (pickedImage) {

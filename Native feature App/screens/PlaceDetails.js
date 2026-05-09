@@ -22,7 +22,7 @@ const PlaceDetails = ({ route, navigation }) => {
           title: place.title
         })
       } catch (error) {
-        console.error('Could not fetched the place details', error)
+        console.error('Could not fetch the place details', error)
       }
     }
     loadPlaceData()

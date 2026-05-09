@@ -1,5 +1,5 @@
 import { StyleSheet, View, Alert } from 'react-native'
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 import MapView, { Marker } from 'react-native-maps'
 import IconButton from '../components/UI/IconButton'
 import { useRoute } from '@react-navigation/native'
@@ -7,11 +7,13 @@ import { useRoute } from '@react-navigation/native'
 function Map ({ navigation }) {
   const route = useRoute()
 
-  const initialLocation = route.params.initialLat &&
-    route.params.initialLng && {
-      lat: route.params.initialLat,
-      lng: route.params.initialLng
-    }
+  const initialLocation = (
+    route.params?.initialLat != null && 
+    route.params?.initialLng != null
+  ) ? {
+    lat: route.params.initialLat,
+    lng: route.params.initialLng
+  } : null
   const [selectedLocation, setSelectedLocation] = useState(initialLocation)
 
   const region = {

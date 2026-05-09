@@ -1,7 +1,7 @@
 export default () => ({
   expo: {
     name: 'Native Feature App',
-    slug: 'Native Feature App',
+    slug: 'native-feature-app',
     version: '1.0.0',
     orientation: 'portrait',
     icon: './assets/icon.png',
@@ -30,9 +30,6 @@ export default () => ({
         }
       },
       permissions: [
-        'android.permission.RECORD_AUDIO',
-        'android.permission.ACCESS_COARSE_LOCATION',
-        'android.permission.ACCESS_FINE_LOCATION',
         'android.permission.RECORD_AUDIO',
         'android.permission.ACCESS_COARSE_LOCATION',
         'android.permission.ACCESS_FINE_LOCATION'

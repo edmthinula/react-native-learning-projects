@@ -16,7 +16,11 @@ function LocationPicker ({ onPickedLocation, formData }) {
   const isFocused = useIsFocused()
 
   useEffect(() => {
-    if (isFocused && route.params) {
+    if (
+      isFocused &&
+      route.params?.pickedLat != null &&
+      route.params?.pickedLng != null
+    ) {
       const mapPickedLocation = {
         lat: route.params.pickedLat,
         lng: route.params.pickedLng
@@ -41,13 +45,17 @@ function LocationPicker ({ onPickedLocation, formData }) {
   }, [pickedLocation, onPickedLocation])
 
   async function verifyPermissions () {
+    if (!locationPermissionInformation) {
+      return false
+    }
+
     if (
-      locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+      locationPermissionInformation?.status === PermissionStatus.UNDETERMINED
     ) {
       const permissionResponse = await requestPermission()
       return permissionResponse.granted
     }
-    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
+    if (locationPermissionInformation?.status === PermissionStatus.DENIED) {
       Alert.alert(
         'Insufficient Permissions!',
         'You need to grant location permission to use this app.'
@@ -62,11 +70,19 @@ function LocationPicker ({ onPickedLocation, formData }) {
     if (!hasPermission) {
       return
     }
-    const location = await getCurrentPositionAsync()
-    setPickedLocation({
-      lat: location.coords.latitude,
-      lng: location.coords.longitude
-    })
+    try {
+      const location = await getCurrentPositionAsync()
+      setPickedLocation({
+        lat: location.coords.latitude,
+        lng: location.coords.longitude
+      })
+    } catch (error) {
+      Alert.alert(
+        'Could not fetch location',
+        'Please try again or pick a location on the map.'
+      )
+      console.log('getCurrentPositionAsync error:', error)
+    }
   }
 
   let locationPreview = <Text>no location picked yet.</Text>
