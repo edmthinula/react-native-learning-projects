@@ -1,15 +1,15 @@
 export default () => ({
   expo: {
-    name: "Native Feature App",
-    slug: "Native Feature App",
-    version: "1.0.0",
-    orientation: "portrait",
-    icon: "./assets/icon.png",
-    userInterfaceStyle: "light",
+    name: 'Native Feature App',
+    slug: 'Native Feature App',
+    version: '1.0.0',
+    orientation: 'portrait',
+    icon: './assets/icon.png',
+    userInterfaceStyle: 'light',
     splash: {
-      image: "./assets/splash-icon.png",
-      resizeMode: "contain",
-      backgroundColor: "#ffffff"
+      image: './assets/splash-icon.png',
+      resizeMode: 'contain',
+      backgroundColor: '#ffffff'
     },
     ios: {
       supportsTablet: true,
@@ -19,10 +19,10 @@ export default () => ({
     },
     android: {
       adaptiveIcon: {
-        backgroundColor: "#E6F4FE",
-        foregroundImage: "./assets/android-icon-foreground.png",
-        backgroundImage: "./assets/android-icon-background.png",
-        monochromeImage: "./assets/android-icon-monochrome.png"
+        backgroundColor: '#E6F4FE',
+        foregroundImage: './assets/android-icon-foreground.png',
+        backgroundImage: './assets/android-icon-background.png',
+        monochromeImage: './assets/android-icon-monochrome.png'
       },
       config: {
         googleMaps: {
@@ -30,31 +30,34 @@ export default () => ({
         }
       },
       permissions: [
-        "android.permission.RECORD_AUDIO",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION"
+        'android.permission.RECORD_AUDIO',
+        'android.permission.ACCESS_COARSE_LOCATION',
+        'android.permission.ACCESS_FINE_LOCATION',
+        'android.permission.RECORD_AUDIO',
+        'android.permission.ACCESS_COARSE_LOCATION',
+        'android.permission.ACCESS_FINE_LOCATION'
       ],
-      package: "com.anonymous.NativeFeatureApp"
+      package: 'com.anonymous.NativeFeatureApp'
     },
     web: {
-      favicon: "./assets/favicon.png"
+      favicon: './assets/favicon.png'
     },
     plugins: [
       [
-        "expo-image-picker",
+        'expo-image-picker',
         {
-          cameraPermission: "the app needs access to your camera in order to take photos of your favorite places."
+          cameraPermission:
+            'the app needs access to your camera in order to take photos of your favorite places.'
         }
       ],
       [
-        "expo-location",
+        'expo-location',
         {
-          locationAlwaysAndWhenInUsePermission: "Allow Native Feature App to use your location."
+          locationAlwaysAndWhenInUsePermission:
+            'Allow Native Feature App to use your location.'
         }
-      ]
+      ],
+      ['expo-sqlite']
     ]
   }
-});
+})
