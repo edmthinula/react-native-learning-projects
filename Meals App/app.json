@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Meals App",
-    "slug": "Meals App",
+    "name": "My Recipe Book",
+    "slug": "my-recipe-book",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -18,19 +18,32 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "1.0.0",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.thinula_native.myrecipebook",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.thinula_native.myrecipebook"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
       "expo-font"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "9eb916a9-5289-416c-a8c0-8c644b371bf6"
+      }
+    },
+    "owner": "thinula_native"
   }
 }
