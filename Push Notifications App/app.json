@@ -1,12 +1,15 @@
 {
   "expo": {
-    "name": "push-notifications-app",
+    "name": "Push Notifications App",
     "slug": "push-notifications-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "plugins": [
+      "expo-Notifications"
+    ],
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
@@ -20,7 +23,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.thinula_native.pushnotificationsapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
