@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "plugins": [
-      "expo-Notifications"
+      "expo-notifications"
     ],
     "splash": {
       "image": "./assets/splash-icon.png",
