@@ -11,7 +11,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { useEffect, useState } from 'react'
 import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants'
-import * as Device from 'expo-device';
+import * as Device from 'expo-device'
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -58,7 +58,9 @@ async function registerForPushNotificationsAsync () {
   }
 
   if (!Device.isDevice) {
-    handleRegistrationError('Must use a physical device for Push Notifications!')
+    handleRegistrationError(
+      'Must use a physical device for Push Notifications!'
+    )
     return
   }
 
@@ -77,8 +79,9 @@ async function registerForPushNotificationsAsync () {
   const projectId =
     Constants?.expoConfig?.extra?.eas?.projectId ??
     Constants?.easConfig?.projectId
-  
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
   const isValidUuid = projectId && uuidRegex.test(projectId)
 
   if (!projectId || !isValidUuid) {
@@ -104,6 +107,7 @@ export default function App () {
   const [currentScreen, setCurrentScreen] = useState('Home')
   const [receivedData, setReceivedData] = useState(null)
   const [isScheduling, setIsScheduling] = useState(false)
+  const [expoPushToken, setExpoPushToken] = useState('')
 
   // Catch notification taps that open the app from a killed (terminated) state
   const lastNotificationResponse = Notifications.useLastNotificationResponse()
@@ -126,34 +130,14 @@ export default function App () {
 
   useEffect(() => {
     async function configureNotifications () {
-      const { status } = await Notifications.requestPermissionsAsync()
-      if (status !== 'granted') {
-        Alert.alert(
-          'Permission required',
-          'You need to grant notification permissions to receive notifications.'
-        )
-        return
-      }
-
       try {
         const token = await registerForPushNotificationsAsync()
         if (token) {
           console.log('My Expo Push Token:', token)
-          // Usually, you would send this token to your backend database here
-          // so your server knows where to send cloud notifications.
+          setExpoPushToken(token)
         }
       } catch (error) {
         console.error('Failed to configure push notifications:', error)
-      }
-
-      // Android requires a notification channel to show notifications properly
-      if (Platform.OS === 'android') {
-        await Notifications.setNotificationChannelAsync('default', {
-          name: 'default',
-          importance: Notifications.AndroidImportance.MAX,
-          vibrationPattern: [0, 250, 250, 250],
-          lightColor: '#6366F1'
-        })
       }
     }
     configureNotifications()
@@ -237,11 +221,34 @@ export default function App () {
               </Text>
             </TouchableOpacity>
 
+            <TouchableOpacity
+              style={[styles.sendButton, !expoPushToken && styles.buttonDisabled]}
+              onPress={async () => {
+                if (expoPushToken) {
+                  await sendPushNotification(expoPushToken)
+                } else {
+                  Alert.alert('Error', 'Push token not available yet!')
+                }
+              }}
+              disabled={!expoPushToken}
+            >
+              <Text style={styles.buttonText}>Send Push Notification</Text>
+            </TouchableOpacity>
+
             {isScheduling && (
               <Text style={styles.helperText}>
                 Now background the app or lock your screen to see it in action!
               </Text>
             )}
+
+            {expoPushToken ? (
+              <View style={styles.tokenContainer}>
+                <Text style={styles.tokenLabel}>Expo Push Token</Text>
+                <Text selectable={true} style={styles.tokenText}>
+                  {expoPushToken}
+                </Text>
+              </View>
+            ) : null}
           </View>
         ) : (
           <View style={styles.card}>
@@ -342,10 +349,48 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600'
   },
+  sendButton: {
+    width: '100%',
+    backgroundColor: '#10B981',
+    borderRadius: 14,
+    paddingVertical: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    shadowColor: '#10B981',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
+    elevation: 5,
+    marginTop: 12
+  },
   helperText: {
     fontSize: 12,
     color: '#10B981',
     marginTop: 12,
+    textAlign: 'center',
+    fontWeight: '500'
+  },
+  tokenContainer: {
+    marginTop: 20,
+    width: '100%',
+    padding: 12,
+    borderRadius: 10,
+    backgroundColor: '#0F172A',
+    borderWidth: 1,
+    borderColor: '#334155',
+    alignItems: 'center'
+  },
+  tokenLabel: {
+    fontSize: 11,
+    color: '#64748B',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    marginBottom: 4
+  },
+  tokenText: {
+    fontSize: 12,
+    color: '#38BDF8',
     textAlign: 'center',
     fontWeight: '500'
   },
