@@ -1,16 +1,104 @@
 import { StatusBar } from 'expo-status-bar'
-import { StyleSheet, Text, View, Alert, Platform, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  Platform,
+  TouchableOpacity
+} from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import { useEffect, useState } from 'react'
 import * as Notifications from 'expo-notifications'
+import Constants from 'expo-constants'
+import * as Device from 'expo-device';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
-    shouldSetBadge: false,
+    shouldSetBadge: false
   })
 })
+
+async function sendPushNotification (expoPushToken) {
+  const message = {
+    to: expoPushToken,
+    sound: 'default',
+    title: 'Original Title',
+    body: 'And here is the body!',
+    data: { someData: 'goes here' }
+  }
+
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(message)
+  })
+}
+
+function handleRegistrationError (errorMessage) {
+  alert(errorMessage)
+  throw new Error(errorMessage)
+}
+
+async function registerForPushNotificationsAsync () {
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C'
+    })
+  }
+
+  if (!Device.isDevice) {
+    handleRegistrationError('Must use a physical device for Push Notifications!')
+    return
+  }
+
+  const { status: existingStatus } = await Notifications.getPermissionsAsync()
+  let finalStatus = existingStatus
+  if (existingStatus !== 'granted') {
+    const { status } = await Notifications.requestPermissionsAsync()
+    finalStatus = status
+  }
+  if (finalStatus !== 'granted') {
+    handleRegistrationError(
+      'Permission not granted to get push token for push notification!'
+    )
+    return
+  }
+  const projectId =
+    Constants?.expoConfig?.extra?.eas?.projectId ??
+    Constants?.easConfig?.projectId
+  
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+  const isValidUuid = projectId && uuidRegex.test(projectId)
+
+  if (!projectId || !isValidUuid) {
+    handleRegistrationError(
+      `Project ID is missing or invalid (found: "${projectId}"). Please configure a valid EAS projectId in your app.json under expo.extra.eas.projectId or run "eas project:init" to link your project.`
+    )
+    return
+  }
+  try {
+    const pushTokenString = (
+      await Notifications.getExpoPushTokenAsync({
+        projectId
+      })
+    ).data
+    console.log('Expo Push Token generated successfully:', pushTokenString)
+    return pushTokenString
+  } catch (e) {
+    handleRegistrationError(`${e}`)
+  }
+}
 
 export default function App () {
   const [currentScreen, setCurrentScreen] = useState('Home')
@@ -20,7 +108,7 @@ export default function App () {
   // Catch notification taps that open the app from a killed (terminated) state
   const lastNotificationResponse = Notifications.useLastNotificationResponse()
 
-  const handleNotificationTap = (response) => {
+  const handleNotificationTap = response => {
     const data = response?.notification?.request?.content?.data
     if (data) {
       setReceivedData(data)
@@ -47,13 +135,24 @@ export default function App () {
         return
       }
 
+      try {
+        const token = await registerForPushNotificationsAsync()
+        if (token) {
+          console.log('My Expo Push Token:', token)
+          // Usually, you would send this token to your backend database here
+          // so your server knows where to send cloud notifications.
+        }
+      } catch (error) {
+        console.error('Failed to configure push notifications:', error)
+      }
+
       // Android requires a notification channel to show notifications properly
       if (Platform.OS === 'android') {
         await Notifications.setNotificationChannelAsync('default', {
           name: 'default',
           importance: Notifications.AndroidImportance.MAX,
           vibrationPattern: [0, 250, 250, 250],
-          lightColor: '#6366F1',
+          lightColor: '#6366F1'
         })
       }
     }
@@ -62,11 +161,10 @@ export default function App () {
 
   useEffect(() => {
     // Listens for when user taps the notification while the app is in background/running
-    const responseSubscription = Notifications.addNotificationResponseReceivedListener(
-      response => {
+    const responseSubscription =
+      Notifications.addNotificationResponseReceivedListener(response => {
         handleNotificationTap(response)
-      }
-    )
+      })
 
     // Listens for when notification arrives (even while app is open)
     const receivedSubscription = Notifications.addNotificationReceivedListener(
@@ -88,7 +186,11 @@ export default function App () {
         content: {
           title: 'Welcome Back! 🔔',
           body: 'Tap here to view your profile and see custom notification data.',
-          data: { userName: 'TJ', screen: 'Profile', timestamp: new Date().toLocaleTimeString() }
+          data: {
+            userName: 'TJ',
+            screen: 'Profile',
+            timestamp: new Date().toLocaleTimeString()
+          }
         },
         trigger: {
           type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
@@ -114,18 +216,19 @@ export default function App () {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <StatusBar style="light" />
-        
+        <StatusBar style='light' />
+
         {currentScreen === 'Home' ? (
           <View style={styles.card}>
             <Text style={styles.iconHeader}>🔔</Text>
             <Text style={styles.title}>NotifyMe</Text>
             <Text style={styles.description}>
-              Experience seamless push notifications and smart deep-link routing in React Native.
+              Experience seamless push notifications and smart deep-link routing
+              in React Native.
             </Text>
 
-            <TouchableOpacity 
-              style={[styles.button, isScheduling && styles.buttonDisabled]} 
+            <TouchableOpacity
+              style={[styles.button, isScheduling && styles.buttonDisabled]}
               onPress={scheduleNotificationHandler}
               disabled={isScheduling}
             >
@@ -144,14 +247,18 @@ export default function App () {
           <View style={styles.card}>
             <Text style={styles.iconHeader}>👤</Text>
             <Text style={styles.title}>User Profile</Text>
-            
+
             <View style={styles.dataContainer}>
               <Text style={styles.dataLabel}>User Name</Text>
-              <Text style={styles.dataValue}>{receivedData?.userName || 'Anonymous User'}</Text>
-              
+              <Text style={styles.dataValue}>
+                {receivedData?.userName || 'Anonymous User'}
+              </Text>
+
               <Text style={styles.dataLabel}>Route Source</Text>
-              <Text style={styles.dataValue}>Deep-Linked via Push Notification</Text>
-              
+              <Text style={styles.dataValue}>
+                Deep-Linked via Push Notification
+              </Text>
+
               {receivedData?.timestamp && (
                 <>
                   <Text style={styles.dataLabel}>Trigger Time</Text>
@@ -160,8 +267,8 @@ export default function App () {
               )}
             </View>
 
-            <TouchableOpacity 
-              style={styles.backButton} 
+            <TouchableOpacity
+              style={styles.backButton}
               onPress={() => setCurrentScreen('Home')}
             >
               <Text style={styles.backButtonText}>← Back to Home</Text>
@@ -178,7 +285,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0B0F19',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   card: {
     width: '85%',
@@ -192,25 +299,25 @@ const styles = StyleSheet.create({
     shadowRadius: 20,
     elevation: 10,
     borderWidth: 1,
-    borderColor: '#334155',
+    borderColor: '#334155'
   },
   iconHeader: {
     fontSize: 48,
-    marginBottom: 16,
+    marginBottom: 16
   },
   title: {
     fontSize: 28,
     fontWeight: 'bold',
     color: '#F8FAFC',
     marginBottom: 12,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   description: {
     fontSize: 15,
     color: '#94A3B8',
     textAlign: 'center',
     lineHeight: 22,
-    marginBottom: 24,
+    marginBottom: 24
   },
   button: {
     width: '100%',
@@ -223,24 +330,24 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.4,
     shadowRadius: 10,
-    elevation: 5,
+    elevation: 5
   },
   buttonDisabled: {
     backgroundColor: '#3B4252',
     shadowOpacity: 0,
-    elevation: 0,
+    elevation: 0
   },
   buttonText: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: '600'
   },
   helperText: {
     fontSize: 12,
     color: '#10B981',
     marginTop: 12,
     textAlign: 'center',
-    fontWeight: '500',
+    fontWeight: '500'
   },
   dataContainer: {
     width: '100%',
@@ -249,7 +356,7 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 24,
     borderWidth: 1,
-    borderColor: '#1E293B',
+    borderColor: '#1E293B'
   },
   dataLabel: {
     fontSize: 11,
@@ -257,24 +364,24 @@ const styles = StyleSheet.create({
     color: '#64748B',
     fontWeight: 'bold',
     letterSpacing: 1,
-    marginBottom: 4,
+    marginBottom: 4
   },
   dataValue: {
     fontSize: 16,
     color: '#F8FAFC',
     fontWeight: '500',
-    marginBottom: 16,
+    marginBottom: 16
   },
   backButton: {
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#475569',
+    borderColor: '#475569'
   },
   backButtonText: {
     color: '#94A3B8',
     fontSize: 14,
-    fontWeight: '600',
-  },
+    fontWeight: '600'
+  }
 })
