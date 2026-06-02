@@ -31,19 +31,37 @@ async function sendPushNotification (expoPushToken) {
     data: { someData: 'goes here' }
   }
 
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(message)
-  })
+  try {
+    const response = await fetch('https://exp.host/--/api/v2/push/send', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Accept-encoding': 'gzip, deflate',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(message)
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const data = await response.json()
+    const pushResponse = data?.data?.[0]
+    if (pushResponse?.status === 'error') {
+      const errorMsg = pushResponse.message || 'Expo push API returned an error'
+      const errorDetail = pushResponse.details?.error ? ` (${pushResponse.details.error})` : ''
+      throw new Error(`${errorMsg}${errorDetail}`)
+    }
+    return data
+  } catch (error) {
+    console.error('Error sending push notification:', error)
+    throw error
+  }
 }
 
 function handleRegistrationError (errorMessage) {
-  alert(errorMessage)
+  Alert.alert(errorMessage)
   throw new Error(errorMessage)
 }
 
@@ -225,7 +243,12 @@ export default function App () {
               style={[styles.sendButton, !expoPushToken && styles.buttonDisabled]}
               onPress={async () => {
                 if (expoPushToken) {
-                  await sendPushNotification(expoPushToken)
+                  try {
+                    await sendPushNotification(expoPushToken)
+                  } catch (error) {
+                    console.error('Error in sendPushNotification: ', error)
+                    Alert.alert('Error', 'Failed to send push notification')
+                  }
                 } else {
                   Alert.alert('Error', 'Push token not available yet!')
                 }

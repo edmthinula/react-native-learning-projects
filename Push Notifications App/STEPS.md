@@ -24,7 +24,7 @@ We have built a fully featured push notifications demo using Expo (SDK 54) and R
    - Includes a "Send Push Notification" action which executes a POST request directly to Expo's Push Notification Service API (`https://exp.host/--/api/v2/push/send`) to send a remote push back to the device.
 6. **Native Android Integration**:
    - Prebuilt native `android` codebase is generated.
-   - Firebase config (`google-services.json`) is integrated into [android/app/google-services.json](file:///H:/react_native/Push%20Notifications%20App/android/app/google-services.json).
+   - Firebase config (`google-services.json`) is integrated into `android/app/google-services.json`.
 
 ---
 
@@ -39,7 +39,7 @@ npm install
 ```
 
 ### 2. Expo / EAS Configuration
-The project is configured under the owner account `thinula_native` with the EAS project ID `95b4021a-01fc-488c-9451-6acda8e6142c` in [app.json](file:///H:/react_native/Push%20Notifications%20App/app.json).
+The project is configured under the owner account `thinula_native` with the EAS project ID `95b4021a-01fc-488c-9451-6acda8e6142c` in `app.json`.
 - If you need to log in to your Expo account, run:
   ```bash
   npx expo login
