@@ -23,8 +23,8 @@ We have built a fully featured push notifications demo using Expo (SDK 54) and R
 5. **Direct Remote Trigger**:
    - Includes a "Send Push Notification" action which executes a POST request directly to Expo's Push Notification Service API (`https://exp.host/--/api/v2/push/send`) to send a remote push back to the device.
 6. **Native Android Integration**:
-   - Prebuilt native `android` codebase is generated.
-   - Firebase config (`google-services.json`) is integrated into `android/app/google-services.json`.
+   - The native `android` codebase is generated via `expo prebuild` / `expo run:android`.
+   - If you need Firebase/FCM integration, provide your own `google-services.json` locally (don't commit it) and configure `app.json` accordingly.
 
 ---
 
@@ -35,6 +35,7 @@ Before running the application, make sure your environment is configured.
 ### 1. Install Dependencies
 Ensure all npm packages are installed:
 ```bash
+cd "Push Notifications App"
 npm install
 ```
 
@@ -44,6 +45,12 @@ The project is configured under the owner account `thinula_native` with the EAS 
   ```bash
   npx expo login
   ```
+
+### 3. Firebase Configuration (`google-services.json`)
+For push notifications to function correctly on Android, the build requires a `google-services.json` file.
+- **Required Location**: Place your downloaded `google-services.json` from the Firebase Console in the **root** of the project directory (i.e. `./google-services.json`).
+- **If you do not have Firebase config yet**:
+  If you are just developing/testing the UI or local scheduled notifications, you will need to remove the `"googleServicesFile": "./google-services.json"` line from `app.json` to prevent build/prebuild errors. Note that doing so will disable remote push notification support for Android.
 
 ---
 

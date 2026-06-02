@@ -26,9 +26,13 @@ async function sendPushNotification (expoPushToken) {
   const message = {
     to: expoPushToken,
     sound: 'default',
-    title: 'Original Title',
-    body: 'And here is the body!',
-    data: { someData: 'goes here' }
+    title: 'Welcome Back! 🔔',
+    body: 'Tap here to view your profile and see custom notification data.',
+    data: {
+      userName: 'TJ',
+      screen: 'Profile',
+      timestamp: new Date().toLocaleTimeString()
+    }
   }
 
   try {
@@ -46,14 +50,18 @@ async function sendPushNotification (expoPushToken) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    const data = await response.json()
-    const pushResponse = data?.data?.[0]
+    const payload = await response.json()
+    const pushResponse = Array.isArray(payload?.data)
+      ? payload.data[0]
+      : payload.data
     if (pushResponse?.status === 'error') {
       const errorMsg = pushResponse.message || 'Expo push API returned an error'
-      const errorDetail = pushResponse.details?.error ? ` (${pushResponse.details.error})` : ''
+      const errorDetail = pushResponse.details?.error
+        ? ` (${pushResponse.details.error})`
+        : ''
       throw new Error(`${errorMsg}${errorDetail}`)
     }
-    return data
+    return payload
   } catch (error) {
     console.error('Error sending push notification:', error)
     throw error
@@ -200,7 +208,7 @@ export default function App () {
         }
       })
     } catch (e) {
-      Alert.alert('Error', 'Failed to schedule notification: ' + e.message)
+      Alert.alert('Error', 'Failed to schedule notification: ' + String(e))
       setIsScheduling(false)
     }
   }
@@ -240,7 +248,10 @@ export default function App () {
             </TouchableOpacity>
 
             <TouchableOpacity
-              style={[styles.sendButton, !expoPushToken && styles.buttonDisabled]}
+              style={[
+                styles.sendButton,
+                !expoPushToken && styles.buttonDisabled
+              ]}
               onPress={async () => {
                 if (expoPushToken) {
                   try {
