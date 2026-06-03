@@ -1,7 +1,7 @@
 # 📱 React Native Learning Projects
 
 This repository contains a collection of **React Native apps** built while following a complete React Native course.  
-Each app focuses on learning a new concept — from fundamentals to advanced topics like navigation, state management,low-level native device integration and security.
+Each app focuses on learning a new concept — from fundamentals to advanced topics like navigation, state management, low-level native device integration, and security.
  
 > Feel free to explore the projects as a comprehensive React Native learning resource.
 
@@ -14,7 +14,7 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 - **Zustand** (State Management & Persistence)
 - **Redux Toolkit / Context API**
 - **APIs** Firebase Auth/Realtime DB, Google Maps API, Google Geocoding API, Expo Push Notifications API
-- **Tooling** Axios, Environment Variables (app.config.js), React Hooks
+- **Tooling** Axios, Environment Variables (app.config.js)
 - **JavaScript (ES6+)**
 - **React Hooks** (`useState`, `useEffect`, `useContext`, `useCallback`)
 - **Database** SQLite (Modern Async API)
@@ -26,31 +26,33 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 
 ### 🔔 Push Notifications App (Latest)
 
-*   **Local Notification Scheduling:** Configured local alerts to trigger after a custom delay (e.g., 5 seconds), carrying navigation data payloads.
+- **Local Notification Scheduling:** Configured local alerts to trigger after a custom delay (e.g., 5 seconds), carrying navigation data payloads.
     
-*   **Remote Notification Flows:** Registered physical devices dynamically with Expo's servers using **Expo Push Tokens** and simulated remote delivery using HTTP POST calls to Expo's Push API (`https://exp.host/--/api/v2/push/send`).
+- **Remote Notification Flows:** Registered physical devices dynamically with Expo's servers using **Expo Push Tokens** and simulated remote delivery using HTTP POST calls to Expo's Push API (`https://exp.host/--/api/v2/push/send`).
     
-*   **Deep Link Routing:** Leveraged incoming notification payloads to programmatically navigate from the Home screen to the User Profile screen on interaction, displaying dynamic transaction metrics (`userName`, `timestamp`).
+- **Deep Link Routing:** Leveraged incoming notification payloads to programmatically navigate from the Home screen to the User Profile screen on interaction, displaying dynamic transaction metrics (`userName`, `timestamp`).
     
-*   **Notification Listeners:** Handled foreground notifications, background taps, and cold-starts using Expo's notification subscriptions (`addNotificationReceivedListener`, `addNotificationResponseReceivedListener`) and React Native hook `useLastNotificationResponse`.
+- **Notification Listeners:** Handled foreground notifications, background taps, and cold-starts using Expo's notification subscriptions (`addNotificationReceivedListener`, `addNotificationResponseReceivedListener`) and React Native hook `useLastNotificationResponse`.
 
 ---
 
 ### 📍 Native feature App
 
-*   **Local SQLite Persistence:** Implemented a robust local storage solution using the modern **expo-sqlite Async API**, moving away from legacy callback-based transactions.
+- **Local SQLite Persistence:** Implemented a robust local storage solution using the modern **expo-sqlite Async API**, moving away from legacy callback-based transactions.
     
-*   **Hardware Integration:**
+- **Hardware Integration:**
     
-    *   **Camera:** Integrated expo-image-picker with custom permission handling to capture high-quality photos.
+  - **Camera:** Integrated expo-image-picker with custom permission handling to capture high-quality photos.
+      
+  - **Location:** Real-time GPS tracking using expo-location.
         
-    *   **Location:** Real-time GPS tracking using expo-location.
-        
-*   **Interactive Maps:** Full integration of react-native-maps allowing users to pick locations via a map interface or current GPS position.
+- **Interactive Maps:** Full integration of react-native-maps allowing users to pick locations via a map interface or current GPS position.
     
-*   **Reverse Geocoding:** Custom implementation of the **Google Geocoding API** to translate coordinates into human-readable addresses.
+- **Reverse Geocoding:** Custom implementation of the **Google Geocoding API** to translate coordinates into human-readable addresses.
     
-*   **Advanced Navigation Flow:** Managed complex state persistence using navigation parameters to prevent data loss when switching between the form and the map.
+- **Advanced Navigation Flow:** Managed complex state persistence using navigation parameters to prevent data loss when switching between the form and the map.
+
+---
 
 ### 🔐 Auth App
 - Implemented **Firebase Authentication** for secure login and signup.
@@ -108,12 +110,12 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 - Implement **Secure Authentication** and persistent user sessions.
 - Build **modular, maintainable, and responsive UI components**.
 - Prepare the codebase for **open-source contribution** and **portfolio showcasing**.
-*   **Device Hardware:** Mastering access to the Camera, Gallery, and GPS.
-*   **Native Persistence:** Understanding the lifecycle of local SQL databases on mobile devices.
-*   **Async Patterns:** Implementing modern async/await patterns for database and API synchronization.
-*   **Permission Management:** Building graceful fallbacks for system permissions (Camera, Location).
-*   **Push Notifications:** Understanding foreground, background, and killed state notification lifecycles.
-*   **Deep Link Routing:** Handling custom notification payloads to dynamically route users to specific app screens (e.g., deep linking).
+- **Device Hardware:** Mastering access to the Camera, Gallery, and GPS.
+- **Native Persistence:** Understanding the lifecycle of local SQL databases on mobile devices.
+- **Async Patterns:** Implementing modern async/await patterns for database and API synchronization.
+- **Permission Management:** Building graceful fallbacks for system permissions (Camera, Location).
+- **Push Notifications:** Understanding foreground, background, and killed state notification lifecycles.
+- **Deep Link Routing:** Handling custom notification payloads to dynamically route users to specific app screens (e.g., deep linking).
 
 ---
 
