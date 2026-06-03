@@ -196,6 +196,7 @@ export default function App () {
         content: {
           title: 'Welcome Back! 🔔',
           body: 'Tap here to view your profile and see custom notification data.',
+          channelId: 'default',
           data: {
             userName: 'TJ',
             screen: 'Profile',

@@ -23,7 +23,7 @@ We have built a fully featured push notifications demo using Expo (SDK 54) and R
 5. **Direct Remote Trigger**:
    - Includes a "Send Push Notification" action which executes a POST request directly to Expo's Push Notification Service API (`https://exp.host/--/api/v2/push/send`) to send a remote push back to the device.
 6. **Native Android Integration**:
-   - The native `android` codebase is generated via `expo prebuild` / `expo run:android`.
+   - The native `android` folder is generated on demand via `expo prebuild` / `expo run:android` (it is not committed to the repo)`.
    - If you need Firebase/FCM integration, provide your own `google-services.json` locally (don't commit it) and configure `app.json` accordingly.
 
 ---
