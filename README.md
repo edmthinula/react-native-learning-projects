@@ -2,9 +2,8 @@
 
 This repository contains a collection of **React Native apps** built while following a complete React Native course.  
 Each app focuses on learning a new concept — from fundamentals to advanced topics like navigation, state management,low-level native device integration and security.
-
-> 🚧 This project is currently in progress (around 70% complete).  
-> Future updates will include new apps, improvements, and refactoring as learning continues.
+ 
+> Feel free to explore the projects as a comprehensive React Native learning resource.
 
 ---
 
@@ -14,18 +13,30 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 - **React Navigation** (Stack, Drawer, Tabs)
 - **Zustand** (State Management & Persistence)
 - **Redux Toolkit / Context API**
-- **APIs** Firebase Auth/Realtime DB, Google Maps API, Google Geocoding API
+- **APIs** Firebase Auth/Realtime DB, Google Maps API, Google Geocoding API, Expo Push Notifications API
 - **Tooling** Axios, Environment Variables (app.config.js), React Hooks
 - **JavaScript (ES6+)**
 - **React Hooks** (`useState`, `useEffect`, `useContext`, `useCallback`)
 - **Database** SQLite (Modern Async API)
-- **Native Modules** Expo Camera, Location, Image Picker, MapView
+- **Native Modules** Expo Camera, Location, Image Picker, MapView, Expo Notifications, Expo Device
 
 ---
 
-## 🧾 Development Progress Summary
+## 🧾 Development Summary
 
-### 📍 Native feature App (Latest)
+### 🔔 Push Notifications App (Latest)
+
+*   **Local Notification Scheduling:** Configured local alerts to trigger after a custom delay (e.g., 5 seconds), carrying navigation data payloads.
+    
+*   **Remote Notification Flows:** Registered physical devices dynamically with Expo's servers using **Expo Push Tokens** and simulated remote delivery using HTTP POST calls to Expo's Push API (`https://exp.host/--/api/v2/push/send`).
+    
+*   **Deep Link Routing:** Leveraged incoming notification payloads to programmatically navigate from the Home screen to the User Profile screen on interaction, displaying dynamic transaction metrics (`userName`, `timestamp`).
+    
+*   **Notification Listeners:** Handled foreground notifications, background taps, and cold-starts using Expo's notification subscriptions (`addNotificationReceivedListener`, `addNotificationResponseReceivedListener`) and React Native hook `useLastNotificationResponse`.
+
+---
+
+### 📍 Native feature App
 
 *   **Local SQLite Persistence:** Implemented a robust local storage solution using the modern **expo-sqlite Async API**, moving away from legacy callback-based transactions.
     
@@ -41,7 +52,7 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
     
 *   **Advanced Navigation Flow:** Managed complex state persistence using navigation parameters to prevent data loss when switching between the form and the map.
 
-### 🔐 Auth App (Latest)
+### 🔐 Auth App
 - Implemented **Firebase Authentication** for secure login and signup.
 - Managed global auth state using **Zustand**.
 - Integrated **Zustand Persist middleware** with **AsyncStorage** to maintain user sessions across app restarts.
@@ -101,6 +112,8 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 *   **Native Persistence:** Understanding the lifecycle of local SQL databases on mobile devices.
 *   **Async Patterns:** Implementing modern async/await patterns for database and API synchronization.
 *   **Permission Management:** Building graceful fallbacks for system permissions (Camera, Location).
+*   **Push Notifications:** Understanding foreground, background, and killed state notification lifecycles.
+*   **Deep Link Routing:** Handling custom notification payloads to dynamically route users to specific app screens (e.g., deep linking).
 
 ---
 
@@ -115,23 +128,20 @@ Each app focuses on learning a new concept — from fundamentals to advanced top
 
 ## 🏗️ Project Status
 
-🚀 Currently under development — ~40% of the learning course completed.  
-🧩 More apps (Native Features, Device Features) will be added progressively.
+🏁 **Completed** — 100% of the learning course and apps are implemented, styled, and tested.
 
 ---
 
 ## 📜 License
 
-This project is intended for **educational and open-source purposes**.  
-License details will be added upon full release.
+This project is open-source and licensed under the **MIT License**. Feel free to use the code for learning or personal projects.
 
 ---
 
-## 💬 Contributing (Future Plan)
+## 💬 Contributing
 
-Once the full course and implementation are complete,  
-this repository will be made **public** for others to learn, contribute, and explore.
+Contributions, issues, and feature requests are welcome! Feel free to check the issues page or submit a pull request if you want to improve any of the applications or add comments/documentation.
 
 ---
 
-### ⭐ If you like this learning journey, don’t forget to star the repo when it’s public!
+### ⭐ If you like this learning journey, don’t forget to star the repo!
