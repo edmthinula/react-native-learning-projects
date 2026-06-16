@@ -60,17 +60,19 @@ function AuthContent ({ isLogin, onAuthenticate }) {
   }
 
   return (
-    <View style={styles.authContent}>
-      <AuthForm
-        isLogin={isLogin}
-        onSubmit={submitHandler}
-        credentialsInvalid={credentialsInvalid}
-        onClearError={clearInvalidHandler}
-      />
-      <View style={styles.buttons}>
-        <FlatButton onPress={switchAuthModeHandler}>
-          {isLogin ? 'Create a new user' : 'Log in instead'}
-        </FlatButton>
+    <View style={styles.container}>
+      <View style={styles.authContent}>
+        <AuthForm
+          isLogin={isLogin}
+          onSubmit={submitHandler}
+          credentialsInvalid={credentialsInvalid}
+          onClearError={clearInvalidHandler}
+        />
+        <View style={styles.buttons}>
+          <FlatButton onPress={switchAuthModeHandler}>
+            {isLogin ? 'Create a new user' : 'Log in instead'}
+          </FlatButton>
+        </View>
       </View>
     </View>
   )
@@ -79,8 +81,12 @@ function AuthContent ({ isLogin, onAuthenticate }) {
 export default AuthContent
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingBottom: 48,
+  },
   authContent: {
-    marginTop: 64,
     marginHorizontal: 32,
     padding: 16,
     borderRadius: 8,
