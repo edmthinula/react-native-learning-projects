@@ -9,6 +9,7 @@ function Input({
   onUpdateValue,
   value,
   isInvalid,
+  errorText,
 }) {
   return (
     <View style={styles.inputContainer}>
@@ -24,6 +25,9 @@ function Input({
         onChangeText={onUpdateValue}
         value={value}
       />
+      {isInvalid && errorText && (
+        <Text style={styles.errorText}>{errorText}</Text>
+      )}
     </View>
   );
 }
@@ -50,5 +54,10 @@ const styles = StyleSheet.create({
   },
   inputInvalid: {
     backgroundColor: Colors.error100,
+  },
+  errorText: {
+    color: Colors.error500,
+    fontSize: 12,
+    marginTop: 4,
   },
 });

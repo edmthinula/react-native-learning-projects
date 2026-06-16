@@ -1,54 +1,62 @@
-import { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import {useNavigation} from '@react-navigation/native'
-import FlatButton from '../ui/FlatButton';
-import AuthForm from './AuthForm';
-import { Colors } from '../../constants/styles';
+import { useState } from 'react'
+import { Alert, StyleSheet, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import FlatButton from '../ui/FlatButton'
+import AuthForm from './AuthForm'
+import { Colors } from '../../constants/styles'
 
-function AuthContent({ isLogin, onAuthenticate }) {
- const navigation = useNavigation();
+function AuthContent ({ isLogin, onAuthenticate }) {
+  const navigation = useNavigation()
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
     confirmEmail: false,
-    confirmPassword: false,
-  });
+    confirmPassword: false
+  })
 
-  function switchAuthModeHandler() {
+  function switchAuthModeHandler () {
     if (isLogin) {
       navigation.replace('Signup')
-    }else{
+    } else {
       navigation.replace('Login')
     }
   }
 
-  function submitHandler(credentials) {
-    let { email, confirmEmail, password, confirmPassword } = credentials;
+  function clearInvalidHandler(inputType) {
+    setCredentialsInvalid((prevState) => ({
+      ...prevState,
+      [inputType]: false,
+    }));
+  }
 
-    email = email.trim();
-    password = password.trim();
+  function submitHandler (credentials) {
+    let { email, confirmEmail, password, confirmPassword } = credentials
 
-    const emailIsValid = email.includes('@');
-    const passwordIsValid = password.length > 6;
+    email = email.trim()
+    password = password.trim()
 
-const emailsAreEqual = isLogin || email === confirmEmail;
-  const passwordsAreEqual = isLogin || password === confirmPassword;
+    const emailIsValid = email.includes('@')
+    const passwordIsValid = password.length >= 6
+
+    const emailsAreEqual = isLogin || email === confirmEmail
+    const passwordsAreEqual = isLogin || password === confirmPassword
 
     if (
       !emailIsValid ||
       !passwordIsValid ||
       (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
     ) {
-      Alert.alert('Invalid input', 'Please check your entered credentials.');
+      Alert.alert('Invalid input', 'Please check your entered credentials.')
+      console.log(emailIsValid,passwordIsValid,passwordsAreEqual)
       setCredentialsInvalid({
         email: !emailIsValid,
-        confirmEmail: !emailIsValid || !emailsAreEqual,
+        confirmEmail: !emailsAreEqual,
         password: !passwordIsValid,
-        confirmPassword: !passwordIsValid || !passwordsAreEqual,
-      });
-      return;
+        confirmPassword: !passwordsAreEqual
+      })
+      return
     }
-    onAuthenticate({ email, password });
+    onAuthenticate({ email, password })
   }
 
   return (
@@ -57,6 +65,7 @@ const emailsAreEqual = isLogin || email === confirmEmail;
         isLogin={isLogin}
         onSubmit={submitHandler}
         credentialsInvalid={credentialsInvalid}
+        onClearError={clearInvalidHandler}
       />
       <View style={styles.buttons}>
         <FlatButton onPress={switchAuthModeHandler}>
@@ -64,10 +73,10 @@ const emailsAreEqual = isLogin || email === confirmEmail;
         </FlatButton>
       </View>
     </View>
-  );
+  )
 }
 
-export default AuthContent;
+export default AuthContent
 
 const styles = StyleSheet.create({
   authContent: {
@@ -80,9 +89,9 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.35,
-    shadowRadius: 4,
+    shadowRadius: 4
   },
   buttons: {
-    marginTop: 8,
-  },
-});
+    marginTop: 8
+  }
+})
