@@ -1,16 +1,16 @@
 export const GlobalStyles = {
   colors: {
-    primary50: '#e4d9fd',
-    primary100: '#c6affc',
-    primary200: '#a281f0',
-    primary400: '#5721d4',
-    primary500: '#3e04c3',
-    primary700: '#2d0689',
-    primary800: '#200364',
-    accent500: '#f7bc0c',
-    error50: '#fcc4e4',
-    error500: '#9b095c',
-    gray500: '#39324a',
-    gray700: '#221c30'
+    primary50: '#fafaf9',
+    primary100: '#f5f5f4',
+    primary200: '#a3a3a3',
+    primary400: '#5f5f5f',
+    primary500: '#404040',
+    primary700: '#262626',
+    primary800: '#171717',
+    accent500: '#d97706',
+    error50: '#fee2e2',
+    error500: '#cc6666',
+    gray500: '#737373',
+    gray700: '#525252'
   }
-}
+};
