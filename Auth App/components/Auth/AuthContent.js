@@ -33,7 +33,9 @@ function AuthContent ({ isLogin, onAuthenticate }) {
     let { email, confirmEmail, password, confirmPassword } = credentials
 
     email = email.trim()
+    confirmEmail = confirmEmail.trim()
     password = password.trim()
+    confirmPassword = confirmPassword.trim()
 
     const emailIsValid = email.includes('@')
     const passwordIsValid = password.length >= 6
@@ -47,7 +49,6 @@ function AuthContent ({ isLogin, onAuthenticate }) {
       (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
     ) {
       Alert.alert('Invalid input', 'Please check your entered credentials.')
-      console.log(emailIsValid,passwordIsValid,passwordsAreEqual)
       setCredentialsInvalid({
         email: !emailIsValid,
         confirmEmail: !emailsAreEqual,
