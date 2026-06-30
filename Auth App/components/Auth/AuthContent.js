@@ -1,77 +1,93 @@
-import { useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
-import {useNavigation} from '@react-navigation/native'
-import FlatButton from '../ui/FlatButton';
-import AuthForm from './AuthForm';
-import { Colors } from '../../constants/styles';
+import { useState } from 'react'
+import { Alert, StyleSheet, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
+import FlatButton from '../ui/FlatButton'
+import AuthForm from './AuthForm'
+import { Colors } from '../../constants/styles'
 
-function AuthContent({ isLogin, onAuthenticate }) {
- const navigation = useNavigation();
+function AuthContent ({ isLogin, onAuthenticate }) {
+  const navigation = useNavigation()
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
     confirmEmail: false,
-    confirmPassword: false,
-  });
+    confirmPassword: false
+  })
 
-  function switchAuthModeHandler() {
+  function switchAuthModeHandler () {
     if (isLogin) {
       navigation.replace('Signup')
-    }else{
+    } else {
       navigation.replace('Login')
     }
   }
 
-  function submitHandler(credentials) {
-    let { email, confirmEmail, password, confirmPassword } = credentials;
+  function clearInvalidHandler(inputType) {
+    setCredentialsInvalid((prevState) => ({
+      ...prevState,
+      [inputType]: false,
+    }));
+  }
 
-    email = email.trim();
-    password = password.trim();
+  function submitHandler (credentials) {
+    let { email, confirmEmail, password, confirmPassword } = credentials
 
-    const emailIsValid = email.includes('@');
-    const passwordIsValid = password.length > 6;
+    email = email.trim()
+    confirmEmail = confirmEmail.trim()
+    password = password.trim()
+    confirmPassword = confirmPassword.trim()
 
-const emailsAreEqual = isLogin || email === confirmEmail;
-  const passwordsAreEqual = isLogin || password === confirmPassword;
+    const emailIsValid = email.includes('@')
+    const passwordIsValid = password.length >= 6
+
+    const emailsAreEqual = isLogin || email === confirmEmail
+    const passwordsAreEqual = isLogin || password === confirmPassword
 
     if (
       !emailIsValid ||
       !passwordIsValid ||
       (!isLogin && (!emailsAreEqual || !passwordsAreEqual))
     ) {
-      Alert.alert('Invalid input', 'Please check your entered credentials.');
+      Alert.alert('Invalid input', 'Please check your entered credentials.')
       setCredentialsInvalid({
         email: !emailIsValid,
-        confirmEmail: !emailIsValid || !emailsAreEqual,
+        confirmEmail: !emailsAreEqual,
         password: !passwordIsValid,
-        confirmPassword: !passwordIsValid || !passwordsAreEqual,
-      });
-      return;
+        confirmPassword: !passwordsAreEqual
+      })
+      return
     }
-    onAuthenticate({ email, password });
+    onAuthenticate({ email, password })
   }
 
   return (
-    <View style={styles.authContent}>
-      <AuthForm
-        isLogin={isLogin}
-        onSubmit={submitHandler}
-        credentialsInvalid={credentialsInvalid}
-      />
-      <View style={styles.buttons}>
-        <FlatButton onPress={switchAuthModeHandler}>
-          {isLogin ? 'Create a new user' : 'Log in instead'}
-        </FlatButton>
+    <View style={styles.container}>
+      <View style={styles.authContent}>
+        <AuthForm
+          isLogin={isLogin}
+          onSubmit={submitHandler}
+          credentialsInvalid={credentialsInvalid}
+          onClearError={clearInvalidHandler}
+        />
+        <View style={styles.buttons}>
+          <FlatButton onPress={switchAuthModeHandler}>
+            {isLogin ? 'Create a new user' : 'Log in instead'}
+          </FlatButton>
+        </View>
       </View>
     </View>
-  );
+  )
 }
 
-export default AuthContent;
+export default AuthContent
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingBottom: 48,
+  },
   authContent: {
-    marginTop: 64,
     marginHorizontal: 32,
     padding: 16,
     borderRadius: 8,
@@ -80,9 +96,9 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.35,
-    shadowRadius: 4,
+    shadowRadius: 4
   },
   buttons: {
-    marginTop: 8,
-  },
-});
+    marginTop: 8
+  }
+})

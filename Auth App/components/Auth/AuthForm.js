@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import Button from '../ui/Button';
 import Input from './Input';
 
-function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
+function AuthForm({ isLogin, onSubmit, credentialsInvalid, onClearError }) {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [enteredConfirmEmail, setEnteredConfirmEmail] = useState('');
   const [enteredPassword, setEnteredPassword] = useState('');
@@ -18,6 +18,9 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
   } = credentialsInvalid;
 
   function updateInputValueHandler(inputType, enteredValue) {
+    if (onClearError) {
+      onClearError(inputType);
+    }
     switch (inputType) {
       case 'email':
         setEnteredEmail(enteredValue);
@@ -52,6 +55,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           value={enteredEmail}
           keyboardType="email-address"
           isInvalid={emailIsInvalid}
+          errorText="Please enter a valid email address."
         />
         {!isLogin && (
           <Input
@@ -60,6 +64,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
             value={enteredConfirmEmail}
             keyboardType="email-address"
             isInvalid={emailsDontMatch}
+            errorText="Email addresses do not match."
           />
         )}
         <Input
@@ -68,6 +73,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
           secure
           value={enteredPassword}
           isInvalid={passwordIsInvalid}
+          errorText="Password must be at least 6 characters long."
         />
         {!isLogin && (
           <Input
@@ -79,6 +85,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
             secure
             value={enteredConfirmPassword}
             isInvalid={passwordsDontMatch}
+            errorText="Passwords do not match."
           />
         )}
         <View style={styles.buttons}>
